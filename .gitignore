@@ -1,0 +1,18 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+.DS_Store
+.idea/
+.vscode/
+
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+pubspec.lock
+
+# Firebase
+lib/firebase_options.dart
