@@ -18,8 +18,10 @@ class CartScreen extends StatelessWidget {
     final cart = app.cart;
     final t = FxLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Your cart')),
+    return VoiceScreenTag(
+      screenKey: 'cart',
+      child: Scaffold(
+      appBar: AppBar(title: Text(t.t('yourCart'))),
       body: cart.isEmpty
           ? EmptyState(
               icon: Icons.shopping_cart_outlined,
@@ -131,7 +133,7 @@ class CartScreen extends StatelessWidget {
                 ),
               ],
             ),
-    );
+    ));
   }
 
   Widget _itemRow(
@@ -199,12 +201,12 @@ class CartScreen extends StatelessWidget {
   Widget _stepperBtn(IconData icon, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(FxRadius.sm),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
           border: Border.all(color: FxColors.borders),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(FxRadius.sm),
         ),
         child: Icon(icon, size: 18, color: FxColors.primary),
       ),

@@ -50,7 +50,9 @@ class _NotificationsScreenState
   Widget build(BuildContext context) {
     final app = context.read<AppState>();
     final t = FxLocalizations.of(context);
-    return Scaffold(
+    return VoiceScreenTag(
+      screenKey: 'notifications',
+      child: Scaffold(
       appBar: AppBar(title: Text(t.t('notifications'))),
       body: Column(
         children: [
@@ -155,6 +157,6 @@ class _NotificationsScreenState
           ),
         ],
       ),
-    );
+    ));
   }
 }

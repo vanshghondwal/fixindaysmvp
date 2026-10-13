@@ -296,7 +296,7 @@ class _HomeScreenState extends State<HomeScreen> {
             right: -6,
             top: -6,
             child: Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(FxSpacing.xs),
               decoration: const BoxDecoration(
                 color: FxColors.error,
                 shape: BoxShape.circle,

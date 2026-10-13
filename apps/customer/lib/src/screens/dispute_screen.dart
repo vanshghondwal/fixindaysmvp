@@ -97,8 +97,9 @@ class _DisputeScreenState extends State<DisputeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Report an issue')),
+      appBar: AppBar(title: Text(t.t('reportIssue'))),
       body: Column(
         children: [
           if (AppConfig.useDemoData) const DemoBanner(),
@@ -117,6 +118,8 @@ class _DisputeScreenState extends State<DisputeScreen> {
                     FutureBuilder<List<Booking>>(
                       future: _bookingsFuture,
                       builder: (_, snap) {
+                        final waiting = snap.connectionState ==
+                            ConnectionState.waiting;
                         final list = snap.data ?? [];
                         return DropdownButtonFormField<
                             String>(
@@ -125,8 +128,9 @@ class _DisputeScreenState extends State<DisputeScreen> {
                             filled: true,
                             fillColor: FxColors.white,
                           ),
-                          hint: const Text(
-                              'Select a booking'),
+                          hint: Text(waiting
+                              ? 'Loading bookings…'
+                              : 'Select a booking'),
                           items: [
                             const DropdownMenuItem<
                                 String>(

@@ -61,7 +61,9 @@ class HelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = FxLocalizations.of(context);
-    return Scaffold(
+    return VoiceScreenTag(
+      screenKey: 'help',
+      child: Scaffold(
       appBar: AppBar(title: Text(t.t('helpSupport'))),
       body: Column(
         children: [
@@ -129,7 +131,7 @@ class HelpScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _contactRow(

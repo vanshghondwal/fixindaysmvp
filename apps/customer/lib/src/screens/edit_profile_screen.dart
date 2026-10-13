@@ -70,9 +70,10 @@ class _EditProfileScreenState
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     final user = context.watch<AppState>().user;
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit profile')),
+      appBar: AppBar(title: Text(t.t('editProfile'))),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(FxSpacing.lg),

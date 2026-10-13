@@ -53,8 +53,9 @@ class LocationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Your location')),
+      appBar: AppBar(title: Text(t.t('yourLocation'))),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(FxSpacing.lg),

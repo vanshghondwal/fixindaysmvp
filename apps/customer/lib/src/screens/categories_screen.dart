@@ -29,9 +29,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     final lang = context.watch<AppState>().locale.languageCode;
-    return Scaffold(
-      appBar: AppBar(title: const Text('All categories')),
+    return VoiceScreenTag(
+      screenKey: 'categories',
+      child: Scaffold(
+      appBar: AppBar(title: Text(t.t('allCategories'))),
       body: Column(
         children: [
           if (AppConfig.useDemoData) const DemoBanner(),
@@ -88,6 +91,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

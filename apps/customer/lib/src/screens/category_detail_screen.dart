@@ -75,7 +75,9 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final lang = context.watch<AppState>().locale.languageCode;
-    return Scaffold(
+    return VoiceScreenTag(
+      screenKey: 'category',
+      child: Scaffold(
       appBar: AppBar(title: Text(widget.category.name(lang))),
       body: Column(
         children: [
@@ -149,7 +151,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _serviceRow(_ServiceEntry e) {

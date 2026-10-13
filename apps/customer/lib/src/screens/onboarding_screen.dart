@@ -98,7 +98,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           child: Icon(p.icon,
                               size: 56, color: FxColors.primary),
                         ),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: FxSpacing.xl),
                         Text(p.title,
                             style: FxText.headline,
                             textAlign: TextAlign.center),

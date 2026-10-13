@@ -67,10 +67,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     final d = widget.draft;
     final cashEnabled = _platformSettings.cashOnServiceEnabled;
     return Scaffold(
-      appBar: AppBar(title: const Text('Payment')),
+      appBar: AppBar(title: Text(t.t('payment'))),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -113,7 +114,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     value: true,
                     groupValue: true,
                     onChanged: cashEnabled ? (_) {} : null,
-                    title: const Text('Cash on service'),
+                    title: Text(t.t('cashOnService')),
                     subtitle: Text(
                       cashEnabled
                           ? 'Pay the provider directly after the job. (Works in demo.)'

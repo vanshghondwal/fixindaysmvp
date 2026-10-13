@@ -18,7 +18,9 @@ class BookingReviewScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final t = FxLocalizations.of(context);
     final d = draft;
-    return Scaffold(
+    return VoiceScreenTag(
+      screenKey: 'review',
+      child: Scaffold(
       appBar: AppBar(title: Text(t.t('confirmBooking'))),
       body: Column(
         children: [
@@ -133,7 +135,7 @@ class BookingReviewScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _row(IconData icon, String label, String value) {
