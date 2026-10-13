@@ -80,12 +80,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
             child: ListView(
               padding: const EdgeInsets.all(FxSpacing.md),
               children: [
-                FxCard(
+                const FxCard(
                   child: Row(
                     children: [
-                      const Icon(Icons.info_outline,
+                      Icon(Icons.info_outline,
                           color: FxColors.warning, size: 32),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment:
@@ -93,7 +93,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           children: [
                             Text('Online payments not set up yet',
                                 style: FxText.subtitle),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             Text(
                               'UPI/cards need Razorpay credentials — see '
                               'FIREBASE_SETUP.md at the repo root. Nothing '
@@ -107,22 +107,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text('Payment method', style: FxText.title),
+                const Text('Payment method', style: FxText.title),
                 const SizedBox(height: 8),
                 FxCard(
-                  child: RadioListTile<bool>(
-                    value: true,
+                  child: RadioGroup<bool>(
                     groupValue: true,
-                    onChanged: cashEnabled ? (_) {} : null,
-                    title: Text(t.t('cashOnService')),
-                    subtitle: Text(
-                      cashEnabled
-                          ? 'Pay the provider directly after the job. (Works in demo.)'
-                          : 'Disabled by platform settings.',
+                    onChanged:
+                        cashEnabled ? (_) {} : null,
+                    child: RadioListTile<bool>(
+                      value: true,
+                      title: Text(t.t('cashOnService')),
+                      subtitle: Text(
+                        cashEnabled
+                            ? 'Pay the provider directly after the job. (Works in demo.)'
+                            : 'Disabled by platform settings.',
+                      ),
+                      secondary: const Icon(
+                          Icons.payments_outlined,
+                          color: FxColors.primary),
                     ),
-                    secondary: const Icon(
-                        Icons.payments_outlined,
-                        color: FxColors.primary),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -131,7 +134,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     mainAxisAlignment:
                         MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Amount due after service',
+                      const Text('Amount due after service',
                           style: FxText.subtitle),
                       Text(
                           formatInr(d.totals.totalPaise),

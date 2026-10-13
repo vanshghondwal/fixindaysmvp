@@ -99,7 +99,7 @@ class SettingsScreen extends StatelessWidget {
                             'Push notifications'),
                         contentPadding: EdgeInsets.zero,
                       ),
-                      Text(
+                      const Text(
                         'Stored on this device only for now — per-user '
                         'preferences move to Firestore once the backend '
                         'is connected.',
@@ -149,7 +149,7 @@ class SettingsScreen extends StatelessWidget {
                       _deleteAccount(context),
                 ),
                 const SizedBox(height: 16),
-                Text(
+                const Text(
                   'FixinDays customer v1.0.0 · demo mode',
                   style: FxText.caption,
                   textAlign: TextAlign.center,

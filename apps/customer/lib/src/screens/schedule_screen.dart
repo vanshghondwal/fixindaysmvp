@@ -88,7 +88,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             child: ListView(
               padding: const EdgeInsets.all(FxSpacing.md),
               children: [
-                Text('Pick a day', style: FxText.title),
+                const Text('Pick a day', style: FxText.title),
                 const SizedBox(height: 8),
                 SizedBox(
                   height: 72,
@@ -127,7 +127,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text('Pick a time', style: FxText.title),
+                const Text('Pick a time', style: FxText.title),
                 const SizedBox(height: 8),
                 if (slots.isEmpty)
                   const Text(
@@ -163,7 +163,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             FxSpacing.md),
                         decoration: BoxDecoration(
                           color: FxColors.warning
-                              .withOpacity(0.12),
+                              .withValues(alpha: 0.12),
                           borderRadius:
                               BorderRadius.circular(
                                   FxRadius.md),
@@ -188,7 +188,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   maxLines: 3,
                 ),
                 const SizedBox(height: 8),
-                Text(
+                const Text(
                   'Slot availability is confirmed by the provider after '
                   'you book — this isn\'t a live calendar yet.',
                   style: FxText.caption,

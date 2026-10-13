@@ -170,7 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Recent searches', style: FxText.title),
+            const Text('Recent searches', style: FxText.title),
             TextButton(
               onPressed: app.clearRecentSearches,
               child: const Text('Clear'),

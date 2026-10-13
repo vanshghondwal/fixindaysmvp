@@ -139,8 +139,8 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
+          const Padding(
+            padding: EdgeInsets.symmetric(
                 horizontal: FxSpacing.md, vertical: 8),
             child: Text(
               'Distances aren\'t shown — precise location needs a Maps API '

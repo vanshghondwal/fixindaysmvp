@@ -80,7 +80,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Tell us about yourself', style: FxText.headline),
+                const Text('Tell us about yourself', style: FxText.headline),
                 const SizedBox(height: 8),
                 Text(
                   'Providers see your name when you book.',
@@ -139,7 +139,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           decoration: BoxDecoration(
             color: FxColors.background,
             border: Border.all(color: FxColors.borders),
-            borderRadius: BorderRadius.circular(FxRadius.md),
+            borderRadius: const BorderRadius.circular(FxRadius.md),
           ),
           child: Text(value.isEmpty ? '—' : value,
               style: FxText.body

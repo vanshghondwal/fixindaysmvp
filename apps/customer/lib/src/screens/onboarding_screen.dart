@@ -91,9 +91,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: 120,
                           height: 120,
                           decoration: BoxDecoration(
-                            color: FxColors.primary.withOpacity(0.12),
+                            color: FxColors.primary.withValues(alpha: 0.12),
                             borderRadius:
-                                BorderRadius.circular(FxRadius.xl),
+                                const BorderRadius.circular(FxRadius.xl),
                           ),
                           child: Icon(p.icon,
                               size: 56, color: FxColors.primary),
@@ -127,7 +127,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     color: _index == i
                         ? FxColors.primary
                         : FxColors.borders,
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: const BorderRadius.circular(4),
                   ),
                 ),
               ),

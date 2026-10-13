@@ -151,13 +151,13 @@ class _ProviderProfileScreenState
                     ),
                     const SizedBox(height: 12),
                     if (p.description.isNotEmpty) ...[
-                      FxSectionHeader(title: 'About'),
+                      const FxSectionHeader(title: 'About'),
                       Text(p.description,
                           style: FxText.body),
                       const SizedBox(height: 12),
                     ],
                     if (p.serviceAreas.isNotEmpty) ...[
-                      FxSectionHeader(title: 'Service areas'),
+                      const FxSectionHeader(title: 'Service areas'),
                       const SizedBox(height: 8),
                       Wrap(
                         spacing: 8,
@@ -268,7 +268,7 @@ class _ProviderProfileScreenState
                           const EdgeInsets.all(FxSpacing.md),
                       decoration: BoxDecoration(
                         color: FxColors.primary
-                            .withOpacity(0.08),
+                            .withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(
                             FxRadius.md),
                       ),
@@ -296,7 +296,7 @@ class _ProviderProfileScreenState
                     ),
                     const SizedBox(height: 8),
                     if (d.reviews.isEmpty)
-                      Text('No reviews yet.',
+                      const Text('No reviews yet.',
                           style: FxText.caption)
                     else
                       ...d.reviews

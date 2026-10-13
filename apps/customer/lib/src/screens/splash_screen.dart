@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 decoration: BoxDecoration(
                   color: FxColors.white,
                   borderRadius:
-                      BorderRadius.circular(FxRadius.xl),
+                      const BorderRadius.circular(FxRadius.xl),
                 ),
                 child: const Icon(
                   Icons.handyman,
@@ -90,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> {
               Text(
                 t.t('tagline'),
                 style: FxText.body.copyWith(
-                  color: FxColors.white.withOpacity(0.85),
+                  color: FxColors.white.withValues(alpha: 0.85),
                 ),
                 textAlign: TextAlign.center,
               ),
