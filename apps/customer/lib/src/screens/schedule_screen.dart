@@ -76,7 +76,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     final t = FxLocalizations.of(context);
     final day = _days[_dayIndex];
     final slots = _slotsFor(day);
-    return Scaffold(
+    return VoiceScreenTag(
+      screenKey: 'schedule',
+      child: Scaffold(
       appBar: AppBar(title: Text(t.t('selectSlot'))),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -225,6 +227,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

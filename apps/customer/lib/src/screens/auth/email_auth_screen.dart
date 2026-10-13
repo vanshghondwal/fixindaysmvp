@@ -13,11 +13,12 @@ class EmailAuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Email sign-in'),
+          title: Text(t.t('emailSignIn')),
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Log in'),
@@ -82,11 +83,12 @@ class _LoginFormState extends State<_LoginForm> {
 
   Future<void> _forgotPassword() async {
     final emailCtrl = TextEditingController();
+    final t = FxLocalizations.of(context);
     final app = context.read<AppState>();
     final sent = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Reset password'),
+        title: Text(t.t('resetPassword')),
         content: FxTextField(
           controller: emailCtrl,
           label: 'Email',

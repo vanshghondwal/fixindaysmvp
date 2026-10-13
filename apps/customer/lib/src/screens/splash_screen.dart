@@ -58,24 +58,53 @@ class _SplashScreenState extends State<SplashScreen> {
     final t = FxLocalizations.of(context);
     return Scaffold(
       backgroundColor: FxColors.primary,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.handyman, size: 72, color: FxColors.white),
-            const SizedBox(height: 12),
-            Text(
-              t.t('appName'),
-              style: FxText.headline.copyWith(color: FxColors.white),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              t.t('tagline'),
-              style: const TextStyle(color: FxColors.white, fontSize: 14),
-            ),
-            const SizedBox(height: 24),
-            const CircularProgressIndicator(color: FxColors.white),
-          ],
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Logo badge: white rounded tile with the brand mark.
+              Container(
+                width: 96,
+                height: 96,
+                decoration: BoxDecoration(
+                  color: FxColors.white,
+                  borderRadius:
+                      BorderRadius.circular(FxRadius.xl),
+                ),
+                child: const Icon(
+                  Icons.handyman,
+                  size: 48,
+                  color: FxColors.primary,
+                ),
+              ),
+              const SizedBox(height: FxSpacing.lg),
+              Text(
+                t.t('appName'),
+                style: FxText.headline.copyWith(
+                  color: FxColors.white,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const SizedBox(height: FxSpacing.xs),
+              Text(
+                t.t('tagline'),
+                style: FxText.body.copyWith(
+                  color: FxColors.white.withOpacity(0.85),
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: FxSpacing.xl),
+              const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(
+                  color: FxColors.white,
+                  strokeWidth: 2.5,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

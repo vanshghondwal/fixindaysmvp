@@ -128,8 +128,9 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Phone sign-in')),
+      appBar: AppBar(title: Text(t.t('phoneSignIn'))),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(FxSpacing.lg),

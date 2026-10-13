@@ -65,9 +65,12 @@ class _ProviderProfileScreenState
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     final app = context.watch<AppState>();
-    return Scaffold(
-      appBar: AppBar(title: const Text('Provider')),
+    return VoiceScreenTag(
+      screenKey: 'provider',
+      child: Scaffold(
+      appBar: AppBar(title: Text(t.t('provider'))),
       body: Column(
         children: [
           if (AppConfig.useDemoData) const DemoBanner(),
@@ -330,6 +333,6 @@ class _ProviderProfileScreenState
                 ),
               ),
             ),
-    );
+    ));
   }
 }

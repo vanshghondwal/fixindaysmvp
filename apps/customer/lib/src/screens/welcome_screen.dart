@@ -55,12 +55,24 @@ class WelcomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Spacer(),
-              const Icon(Icons.handyman,
-                  size: 72, color: FxColors.primary),
-              const SizedBox(height: 16),
+              Center(
+                child: Container(
+                  width: 88,
+                  height: 88,
+                  decoration: BoxDecoration(
+                    color: FxColors.primary.withOpacity(0.12),
+                    borderRadius:
+                        BorderRadius.circular(FxRadius.xl),
+                  ),
+                  child: const Icon(Icons.handyman,
+                      size: 44, color: FxColors.primary),
+                ),
+              ),
+              const SizedBox(height: FxSpacing.md),
               Text(t.t('appName'),
-                  style: FxText.headline, textAlign: TextAlign.center),
-              const SizedBox(height: 8),
+                  style: FxText.headline.copyWith(letterSpacing: 0.8),
+                  textAlign: TextAlign.center),
+              const SizedBox(height: FxSpacing.xs),
               Text(
                 t.t('tagline'),
                 style:

@@ -68,9 +68,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     final user = context.watch<AppState>().user;
     return Scaffold(
-      appBar: AppBar(title: const Text('Set up your profile')),
+      appBar: AppBar(title: Text(t.t('setupProfile'))),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(FxSpacing.lg),

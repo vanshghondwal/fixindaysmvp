@@ -77,8 +77,10 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
   @override
   Widget build(BuildContext context) {
     final t = FxLocalizations.of(context);
-    return Scaffold(
-      appBar: AppBar(title: const Text('Providers')),
+    return VoiceScreenTag(
+      screenKey: 'providers',
+      child: Scaffold(
+      appBar: AppBar(title: Text(t.t('providers'))),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -195,7 +197,7 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   void _openProvider(String id) {

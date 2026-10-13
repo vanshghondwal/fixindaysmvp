@@ -101,8 +101,8 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       Text(
                         'Stored on this device only for now — per-user '
-                        'preferences move to Firestore with the backend '
-                        '(TODO).',
+                        'preferences move to Firestore once the backend '
+                        'is connected.',
                         style: FxText.caption,
                       ),
                     ],

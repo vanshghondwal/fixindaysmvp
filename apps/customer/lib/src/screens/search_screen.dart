@@ -69,7 +69,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final t = FxLocalizations.of(context);
     final app = context.watch<AppState>();
-    return Scaffold(
+    return VoiceScreenTag(
+      screenKey: 'search',
+      child: Scaffold(
       appBar: AppBar(title: Text(t.t('searchServices'))),
       body: Column(
         children: [
@@ -149,7 +151,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _recentSearches(AppState app) {

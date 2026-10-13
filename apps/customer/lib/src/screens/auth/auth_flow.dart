@@ -9,10 +9,10 @@ import 'package:fixindays_core/fixindays_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../state/app_state.dart';
-import 'location_screen.dart';
-import 'profile_setup_screen.dart';
-import 'root_shell.dart';
+import '../../state/app_state.dart';
+import '../location_screen.dart';
+import '../profile_setup_screen.dart';
+import '../root_shell.dart';
 
 Future<void> completeSignIn(BuildContext context, AppUser user) async {
   final app = context.read<AppState>();

@@ -7,6 +7,7 @@ library;
 import 'dart:collection';
 
 import 'package:fixindays_core/fixindays_core.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 
 /// One line in the customer's cart.
@@ -100,6 +101,47 @@ class BookingDraft {
 class AppState extends ChangeNotifier {
   final DemoRepositories repos = DemoRepositories();
   final CartState cart = CartState();
+
+  /// AI assistant. Rule-based mode works now from real repository data.
+  /// [onlineAssistant] calls the `askAssistant` Cloud Function (Gemini key
+  /// lives server-side, set with `firebase functions:secrets:set
+  /// GEMINI_API_KEY` — never embedded in the app). Any online failure
+  /// (key not set, signed out, offline, rate-limited) honestly falls back
+  /// to the rule-based engine, so the UI never fakes "Powered by Gemini".
+  final AiAssistantService assistant = const RuleBasedAssistant();
+
+  /// True once a real Gemini answer has arrived this session. The voice
+  /// sheet uses this — not just "wiring exists" — for its mode label, so
+  /// the app never claims "Gemini online" before the server key is set.
+  bool geminiConfirmed = false;
+
+  late final GeminiAssistant onlineAssistant =
+      GeminiAssistant(remoteCall: _askOnline);
+
+  /// Online path for the voice assistant. On success the reply carries
+  /// [AssistantMode.gemini]; on any failure the honest rule-based engine
+  /// answers instead (its reply carries [AssistantMode.ruleBased]).
+  Future<AssistantReply> _askOnline(String question, AssistantContext ctx) async {
+    try {
+      final result = await FirebaseFunctions.instance
+          .httpsCallable('askAssistant')
+          .call({'question': question, 'locale': ctx.locale});
+      final data = (result.data as Map?)?.cast<String, dynamic>();
+      final text = data?['reply']?.toString().trim() ?? '';
+      if (text.isEmpty) throw StateError('empty online reply');
+      if (!geminiConfirmed) {
+        geminiConfirmed = true;
+        notifyListeners();
+      }
+      return AssistantReply(
+        text: text,
+        mode: AssistantMode.gemini,
+        fromDemoData: ctx.isDemo,
+      );
+    } catch (_) {
+      return assistant.ask(question, ctx);
+    }
+  }
 
   AppUser? user;
   Locale locale = const Locale('en');

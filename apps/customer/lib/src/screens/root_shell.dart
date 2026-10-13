@@ -24,6 +24,17 @@ class _RootShellState extends State<RootShell> {
     ProfileScreen(),
   ];
 
+  static const _voiceKeys = ['home', 'bookings', 'profile'];
+
+  @override
+  void initState() {
+    super.initState();
+    // IndexedStack builds all tabs at once, so the stack-based tag tracker
+    // cannot know which tab is visible — set it explicitly here and on
+    // every tab switch.
+    VoiceScreenTracker.setBase(_voiceKeys[_index]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = FxLocalizations.of(context);
@@ -31,7 +42,10 @@ class _RootShellState extends State<RootShell> {
       body: IndexedStack(index: _index, children: _screens),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
-        onDestinationSelected: (i) => setState(() => _index = i),
+        onDestinationSelected: (i) {
+          VoiceScreenTracker.setBase(_voiceKeys[i]);
+          setState(() => _index = i);
+        },
         destinations: [
           NavigationDestination(
             icon: const Icon(Icons.home_outlined),
