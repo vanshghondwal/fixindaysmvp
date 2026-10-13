@@ -1,5 +1,7 @@
-/// Settings: language, notification preference, privacy note, sign out,
-/// and destructive deactivation.
+/// Settings — maximalism edition.
+///
+/// Colorful preference + account cards on cream, with the same language,
+/// notification, privacy, sign-out and deactivation logic as before.
 library;
 
 import 'package:fixindays_core/fixindays_core.dart';
@@ -58,16 +60,21 @@ class SettingsScreen extends StatelessWidget {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Privacy'),
+        backgroundColor: MaxColors.cardWhite,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        title: const Text('Privacy', style: MaxText.title),
         content: const Text(
           'Demo mode: all data in this app is sample data stored in memory on '
           'this device. Nothing is uploaded anywhere. After Firebase is '
           'connected, your business profile is visible to customers in your '
           'service areas, and booking details are shared only with the '
           'parties involved.',
+          style: MaxText.body,
         ),
         actions: [
-          FxButton(
+          MaxButton(
             label: FxLocalizations.of(context).t('confirm'),
             onPressed: () => Navigator.pop(ctx),
           ),
@@ -81,91 +88,113 @@ class SettingsScreen extends StatelessWidget {
     final t = FxLocalizations.of(context);
     final state = context.watch<PartnerState>();
 
-    return Scaffold(
-      appBar: AppBar(title: Text(t.t('settings'))),
+    return MaxScaffold(
+      appBar: AppBar(
+        backgroundColor: MaxColors.cream,
+        foregroundColor: MaxColors.ink,
+        elevation: 0,
+        title: Text(t.t('settings'), style: MaxText.title),
+      ),
       body: Column(
         children: [
           if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(FxSpacing.lg),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
               children: [
-                const FxSectionHeader(title: 'Preferences'),
-                const SizedBox(height: 8),
-                FxCard(
+                const MaxSectionHeader(title: 'Preferences'),
+                const SizedBox(height: 4),
+                MaxCard(
+                  shadowColor: MaxColors.sky,
                   padding: EdgeInsets.zero,
-                  child: RadioGroup<Locale>(
-                    groupValue: state.locale,
-                    onChanged: (v) =>
-                        context.read<PartnerState>().setLocale(v!),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: RadioGroup<Locale>(
+                      groupValue: state.locale,
+                      onChanged: (v) =>
+                          context.read<PartnerState>().setLocale(v!),
+                      child: Column(
+                        children: [
+                          RadioListTile<Locale>(
+                            title: Text(t.t('language'),
+                                style: MaxText.title
+                                    .copyWith(fontSize: 15)),
+                            subtitle: const Text('English',
+                                style: MaxText.body),
+                            value: const Locale('en'),
+                            activeColor: MaxColors.orange,
+                          ),
+                          const Divider(height: 1),
+                          RadioListTile<Locale>(
+                            title: Text(t.t('language'),
+                                style: MaxText.title
+                                    .copyWith(fontSize: 15)),
+                            subtitle: const Text('हिन्दी',
+                                style: MaxText.body),
+                            value: const Locale('hi'),
+                            activeColor: MaxColors.orange,
+                          ),
+                          const Divider(height: 1),
+                          SwitchListTile(
+                            title: const Text(
+                                'Booking notifications',
+                                style: MaxText.title),
+                            subtitle: const Text(
+                                'Get notified about new requests (demo).',
+                                style: MaxText.caption),
+                            value: state.notificationsEnabled,
+                            activeThumbColor: MaxColors.orange,
+                            onChanged: (v) => context
+                                .read<PartnerState>()
+                                .setNotificationsEnabled(v),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const MaxSectionHeader(title: 'Account'),
+                const SizedBox(height: 4),
+                MaxCard(
+                  shadowColor: MaxColors.purple,
+                  padding: EdgeInsets.zero,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
                     child: Column(
                       children: [
-                        RadioListTile<Locale>(
-                          title: Text(t.t('language')),
-                          subtitle: const Text('English'),
-                          value: const Locale('en'),
+                        _menuRow(
+                          icon: Icons.privacy_tip_outlined,
+                          bg: MaxColors.skySoft,
+                          fg: MaxColors.sky,
+                          title: 'Privacy',
+                          onTap: () => _privacy(context),
                         ),
                         const Divider(height: 1),
-                        RadioListTile<Locale>(
-                          title: Text(t.t('language')),
-                          subtitle: const Text('हिन्दी'),
-                          value: const Locale('hi'),
+                        _menuRow(
+                          icon: Icons.logout,
+                          bg: MaxColors.creamDeep,
+                          fg: MaxColors.inkSoft,
+                          title: t.t('signOut'),
+                          onTap: () => _signOut(context),
                         ),
                         const Divider(height: 1),
-                        SwitchListTile(
-                          title: const Text('Booking notifications'),
-                          subtitle: const Text(
-                              'Get notified about new requests (demo).',
-                              style: FxText.caption),
-                          value: state.notificationsEnabled,
-                          onChanged: (v) => context
-                              .read<PartnerState>()
-                              .setNotificationsEnabled(v),
+                        _menuRow(
+                          icon: Icons.delete_forever_outlined,
+                          bg: MaxColors.coralSoft,
+                          fg: MaxColors.coral,
+                          title: 'Deactivate account',
+                          titleColor: MaxColors.coral,
+                          onTap: () => _deactivate(context),
                         ),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                const FxSectionHeader(title: 'Account'),
-                const SizedBox(height: 8),
-                FxCard(
-                  padding: EdgeInsets.zero,
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.privacy_tip_outlined,
-                            color: FxColors.primary),
-                        title: const Text('Privacy'),
-                        trailing: const Icon(Icons.chevron_right,
-                            color: FxColors.secondaryText),
-                        onTap: () => _privacy(context),
-                      ),
-                      const Divider(height: 1),
-                      ListTile(
-                        leading: const Icon(Icons.logout,
-                            color: FxColors.secondaryText),
-                        title: Text(t.t('signOut')),
-                        onTap: () => _signOut(context),
-                      ),
-                      const Divider(height: 1),
-                      ListTile(
-                        leading: const Icon(
-                            Icons.delete_forever_outlined,
-                            color: FxColors.error),
-                        title: const Text(
-                          'Deactivate account',
-                          style: TextStyle(color: FxColors.error),
-                        ),
-                        onTap: () => _deactivate(context),
-                      ),
-                    ],
-                  ),
-                ),
                 const SizedBox(height: 24),
                 const Text(
                   'FixinDays Partner • 1.0.0+1 • Demo mode',
-                  style: FxText.caption,
+                  style: MaxText.caption,
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -173,6 +202,33 @@ class SettingsScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _menuRow({
+    required IconData icon,
+    required Color bg,
+    required Color fg,
+    required String title,
+    Color? titleColor,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Container(
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(
+          color: bg,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Icon(icon, color: fg, size: 22),
+      ),
+      title: Text(title,
+          style: MaxText.title.copyWith(
+              fontSize: 15, color: titleColor ?? MaxColors.ink)),
+      trailing:
+          const Icon(Icons.chevron_right, color: MaxColors.inkFaint),
+      onTap: onTap,
     );
   }
 }

@@ -3,6 +3,7 @@
 library fixindays_core;
 
 export 'src/theme.dart';
+export 'src/maximalism.dart';
 export 'src/models.dart';
 export 'src/repositories.dart';
 export 'src/demo_repository.dart';
