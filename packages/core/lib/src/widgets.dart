@@ -51,26 +51,38 @@ class FxButton extends StatelessWidget {
             ],
           );
     final onTap = loading ? null : onPressed;
+    // Enforce a 48dp minimum touch target on every button kind.
+    const minTap = Size(48, 48);
     switch (kind) {
       case FxButtonKind.primary:
-        return ElevatedButton(onPressed: onTap, child: child);
+        return ElevatedButton(
+          onPressed: onTap,
+          style: ElevatedButton.styleFrom(minimumSize: minTap),
+          child: child,
+        );
       case FxButtonKind.secondary:
         return ElevatedButton(
           onPressed: onTap,
           style: ElevatedButton.styleFrom(
             backgroundColor: FxColors.navy,
             foregroundColor: FxColors.white,
+            minimumSize: minTap,
           ),
           child: child,
         );
       case FxButtonKind.outlined:
-        return OutlinedButton(onPressed: onTap, child: child);
+        return OutlinedButton(
+          onPressed: onTap,
+          style: OutlinedButton.styleFrom(minimumSize: minTap),
+          child: child,
+        );
       case FxButtonKind.destructive:
         return ElevatedButton(
           onPressed: onTap,
           style: ElevatedButton.styleFrom(
             backgroundColor: FxColors.error,
             foregroundColor: FxColors.white,
+            minimumSize: minTap,
           ),
           child: child,
         );
@@ -260,6 +272,7 @@ class ProviderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     return FxCard(
       onTap: onTap,
       padding: const EdgeInsets.all(FxSpacing.md),
@@ -298,8 +311,8 @@ class ProviderCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   priceFromPaise != null
-                      ? '${formatInr(priceFromPaise!)} onwards'
-                      : 'Price on request',
+                      ? '${formatInr(priceFromPaise!)} ${t.t('onwards')}'
+                      : t.t('priceOnRequest'),
                   style: FxText.price.copyWith(fontSize: 14),
                 ),
               ],
@@ -307,7 +320,7 @@ class ProviderCard extends StatelessWidget {
           ),
           if (onBook != null) ...[
             const SizedBox(width: 8),
-            FxButton(label: 'Book', onPressed: onBook),
+            FxButton(label: t.t('book'), onPressed: onBook),
           ],
         ],
       ),
@@ -539,18 +552,20 @@ class DemoBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       color: FxColors.warning.withOpacity(0.15),
-      child: const Row(
+      child: Row(
         children: [
-          Icon(Icons.info_outline, size: 16, color: FxColors.warning),
-          SizedBox(width: 8),
+          const Icon(Icons.info_outline,
+              size: 16, color: FxColors.warning),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Demo mode — sample data shown. Connect Firebase for live data.',
-              style: TextStyle(fontSize: 12, color: FxColors.navy),
+              t.t('demoBanner'),
+              style: const TextStyle(fontSize: 12, color: FxColors.navy),
             ),
           ),
         ],
