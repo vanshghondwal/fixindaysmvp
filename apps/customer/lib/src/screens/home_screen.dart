@@ -201,8 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   _categoryGrid(data.categories),
                   const SizedBox(height: 8),
                   _trustBadges(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
                         horizontal: FxSpacing.md),
                     child: FxSectionHeader(
                         title: 'Top rated near you'),

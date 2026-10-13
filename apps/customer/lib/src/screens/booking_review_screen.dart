@@ -81,7 +81,7 @@ class BookingReviewScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                FxSectionHeader(title: 'Services'),
+                const FxSectionHeader(title: 'Services'),
                 const SizedBox(height: 4),
                 FxCard(
                   child: Column(
@@ -106,7 +106,7 @@ class BookingReviewScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                Text(
+                const Text(
                   'By confirming you agree to the FixinDays booking terms: '
                   'free cancellation until the provider accepts, and payment '
                   'is due after the service for cash bookings.',

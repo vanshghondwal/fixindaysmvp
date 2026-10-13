@@ -101,13 +101,13 @@ class _EditProfileScreenState
                   hint: 'https://…',
                 ),
                 const SizedBox(height: 16),
-                Text('Phone', style: FxText.subtitle),
+                const Text('Phone', style: FxText.subtitle),
                 const SizedBox(height: 6),
                 Text(user?.phone ?? '—',
                     style: FxText.body.copyWith(
                         color: FxColors.secondaryText)),
                 const SizedBox(height: 4),
-                Text(
+                const Text(
                   'Phone and email are managed by auth — changes need '
                   'Firebase Auth config (see FIREBASE_SETUP.md).',
                   style: FxText.caption,

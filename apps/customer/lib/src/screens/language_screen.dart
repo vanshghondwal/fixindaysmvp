@@ -55,7 +55,7 @@ class LanguageScreen extends StatelessWidget {
             children: [
               if (!fromSettings) ...[
                 const SizedBox(height: 32),
-                Text('Choose your language', style: FxText.headline),
+                const Text('Choose your language', style: FxText.headline),
                 const SizedBox(height: 4),
                 Text(
                   'अपनी भाषा चुनें',
@@ -76,7 +76,7 @@ class LanguageScreen extends StatelessWidget {
                   selected: current == 'hi'),
               const Spacer(),
               if (!fromSettings)
-                Text(
+                const Text(
                   'You can change this later from Profile → Settings.',
                   style: FxText.caption,
                   textAlign: TextAlign.center,

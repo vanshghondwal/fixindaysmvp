@@ -112,7 +112,7 @@ class _DisputeScreenState extends State<DisputeScreen> {
                   crossAxisAlignment:
                       CrossAxisAlignment.stretch,
                   children: [
-                    Text('Related booking (optional)',
+                    const Text('Related booking (optional)',
                         style: FxText.subtitle),
                     const SizedBox(height: 6),
                     FutureBuilder<List<Booking>>(
@@ -123,7 +123,7 @@ class _DisputeScreenState extends State<DisputeScreen> {
                         final list = snap.data ?? [];
                         return DropdownButtonFormField<
                             String>(
-                          value: _selectedBookingId,
+                          initialValue: _selectedBookingId,
                           decoration: const InputDecoration(
                             filled: true,
                             fillColor: FxColors.white,
@@ -136,7 +136,7 @@ class _DisputeScreenState extends State<DisputeScreen> {
                                 String>(
                               value: null,
                               child:
-                                  Text('No specific booking'),
+                                  const Text('No specific booking'),
                             ),
                             ...list.map((b) =>
                                 DropdownMenuItem(
@@ -156,11 +156,11 @@ class _DisputeScreenState extends State<DisputeScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    Text('Category',
+                    const Text('Category',
                         style: FxText.subtitle),
                     const SizedBox(height: 6),
                     DropdownButtonFormField<String>(
-                      value: _category,
+                      initialValue: _category,
                       decoration: const InputDecoration(
                         filled: true,
                         fillColor: FxColors.white,
@@ -193,14 +193,14 @@ class _DisputeScreenState extends State<DisputeScreen> {
                         borderRadius: BorderRadius.circular(
                             FxRadius.md),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
-                          const Icon(
+                          Icon(
                               Icons
                                   .add_photo_alternate_outlined,
                               color:
                                   FxColors.secondaryText),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               'Photo evidence uploads need Firebase '

@@ -268,7 +268,7 @@ class _BookingDetailScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Services', style: FxText.subtitle),
+              const Text('Services', style: FxText.subtitle),
               const SizedBox(height: 4),
               ...b.items.map((i) => LineItemRow(item: i)),
               const Divider(),
@@ -284,7 +284,7 @@ class _BookingDetailScreenState
           ),
         ),
         const SizedBox(height: 12),
-        FxSectionHeader(title: 'Timeline'),
+        const FxSectionHeader(title: 'Timeline'),
         const SizedBox(height: 4),
         _timelineStep(
             Icons.receipt_long, 'Booked', b.createdAt),

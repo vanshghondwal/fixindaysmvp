@@ -57,7 +57,7 @@ class CartScreen extends StatelessWidget {
                                           .businessName,
                                       style: FxText.subtitle),
                                   const SizedBox(height: 2),
-                                  Text(
+                                  const Text(
                                     'One provider per cart',
                                     style: FxText.caption,
                                   ),
@@ -90,7 +90,7 @@ class CartScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
+                      const Text(
                         'Final amount is confirmed by the provider for '
                         'estimate/quote-based services.',
                         style: FxText.caption,
@@ -201,12 +201,12 @@ class CartScreen extends StatelessWidget {
   Widget _stepperBtn(IconData icon, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(FxRadius.sm),
+      borderRadius: const BorderRadius.circular(FxRadius.sm),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
           border: Border.all(color: FxColors.borders),
-          borderRadius: BorderRadius.circular(FxRadius.sm),
+          borderRadius: const BorderRadius.circular(FxRadius.sm),
         ),
         child: Icon(icon, size: 18, color: FxColors.primary),
       ),

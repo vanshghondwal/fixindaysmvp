@@ -62,12 +62,12 @@ class LocationScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              FxCard(
+              const FxCard(
                 child: Row(
                   children: [
-                    const Icon(Icons.location_on,
+                    Icon(Icons.location_on,
                         size: 40, color: FxColors.primary),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         'Providers need your address to reach you and to '
@@ -85,7 +85,7 @@ class LocationScreen extends StatelessWidget {
                 onPressed: () => _useCurrentLocation(context),
               ),
               const SizedBox(height: 4),
-              Text(
+              const Text(
                 'Needs a Maps API key — see FIREBASE_SETUP.md.',
                 style: FxText.caption,
                 textAlign: TextAlign.center,

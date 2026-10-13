@@ -131,7 +131,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                       ...data.services.map(_serviceRow),
                       const SizedBox(height: 16),
                     ],
-                    FxSectionHeader(title: 'Providers'),
+                    const FxSectionHeader(title: 'Providers'),
                     const SizedBox(height: 8),
                     ...data.providers.map((p) => Padding(
                           padding: const EdgeInsets.only(

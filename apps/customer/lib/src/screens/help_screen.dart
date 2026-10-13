@@ -72,7 +72,7 @@ class HelpScreen extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(FxSpacing.md),
               children: [
-                FxSectionHeader(
+                const FxSectionHeader(
                     title: 'Frequently asked questions'),
                 const SizedBox(height: 8),
                 ..._faqs.map((f) => Padding(
@@ -95,7 +95,7 @@ class HelpScreen extends StatelessWidget {
                       ),
                     )),
                 const SizedBox(height: 16),
-                FxSectionHeader(title: 'Contact support'),
+                const FxSectionHeader(title: 'Contact support'),
                 const SizedBox(height: 8),
                 FxCard(
                   child: Column(
@@ -106,7 +106,7 @@ class HelpScreen extends StatelessWidget {
                       _contactRow(Icons.email_outlined,
                           'Email', _support.supportEmail),
                       const SizedBox(height: 4),
-                      Text(
+                      const Text(
                         'Demo contact details — replaced with real ones '
                         'after backend setup.',
                         style: FxText.caption,
