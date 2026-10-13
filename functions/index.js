@@ -10,6 +10,9 @@
  *  - transitionBooking    customer|provider: enforced status transition matrix
  *  - generateArrivalCode  provider: 4-digit arrival code (sha256 stored)
  *  - submitReview         customer: one review per completed booking
+ *  - askAssistant         customer: Gemini online mode for the AI assistant
+ *                          (key from env, never the client; honest
+ *                          "not configured" error when unset)
  *  - setAdminClaim        admin only: grant the `admin:true` custom claim
  *
  * Firestore triggers:
@@ -509,4 +512,105 @@ exports.setAdminClaim = onCall(async (request) => {
   });
   logger.info('admin claim updated', {by: adminUid, target: targetUid, grant});
   return {ok: true, uid: targetUid, admin: grant};
+});
+
+// ---------------------------------------------------------------------------
+// askAssistant — Gemini online mode for the AI assistant
+// ---------------------------------------------------------------------------
+
+/**
+ * Online AI mode. The Gemini API key comes ONLY from the `GEMINI_API_KEY`
+ * secret (set with `firebase functions:secrets:set GEMINI_API_KEY`) —
+ * it is never embedded in the client and never echoed back.
+ *
+ * Guardrails:
+ *  - per-user rate limit (20 questions/day) via a transaction;
+ *  - system prompt forbids inventing prices, ratings, availability or
+ *    reviews, and forbids performing booking/payment actions;
+ *  - when the key is not set, throws `failed-precondition` so the client
+ *    honestly falls back to the rule-based offline mode instead of
+ *    faking a "Powered by Gemini" label.
+ *
+ * NOTE: this stub passes the user's question through with guardrails.
+ * A production hardening would inject server-side Firestore context
+ * (provider summaries the caller is allowed to see) into the prompt
+ * instead of trusting any client-supplied context.
+ */
+exports.askAssistant = onCall(async (request) => {
+  const uid = requireUid(request);
+  const data = request.data || {};
+  const question = asNonEmptyString(data.question, 'question', 2000).trim();
+  const locale = data.locale === 'hi' ? 'hi' : 'en';
+
+  // Rate limit: 20 questions per user per day.
+  const rlRef = db.collection('assistantRateLimits').doc(uid);
+  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD (UTC)
+  await db.runTransaction(async (tx) => {
+    const snap = await tx.get(rlRef);
+    const d = snap.exists ? snap.data() : {};
+    const count = d.day === today ? (d.count || 0) : 0;
+    if (count >= 20) {
+      throw new HttpsError(
+        'resource-exhausted',
+        'Daily AI question limit reached. Try again tomorrow.',
+      );
+    }
+    tx.set(rlRef, {day: today, count: count + 1}, {merge: true});
+  });
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    // Honest signal: the client shows the rule-based offline mode.
+    throw new HttpsError(
+      'failed-precondition',
+      'AI online mode is not configured yet.',
+    );
+  }
+
+  const systemPrompt = [
+    'You are the FixinDays customer support assistant.',
+    'RULES (never break them):',
+    '1. Answer ONLY from information the user can verify in the app.',
+    '2. NEVER invent provider prices, ratings, review counts, availability, or service areas.',
+    '3. If you do not know something, say so honestly instead of guessing.',
+    '4. NEVER perform bookings, payments, cancellations or account changes —',
+    '   direct the user to the relevant screen in the app instead.',
+    '5. Keep answers short and in the user\'s language.',
+  ].join('\n');
+
+  let resp;
+  try {
+    resp = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey,
+        },
+        body: JSON.stringify({
+          systemInstruction: {parts: [{text: systemPrompt}]},
+          contents: [{parts: [{text: `[locale=${locale}] ${question}`}]}],
+          generationConfig: {maxOutputTokens: 400, temperature: 0.3},
+        }),
+      },
+    );
+  } catch (e) {
+    logger.warn('askAssistant: Gemini request failed', {uid, err: String(e)});
+    throw new HttpsError('unavailable', 'AI service is temporarily down.');
+  }
+  if (!resp.ok) {
+    logger.warn('askAssistant: Gemini HTTP error', {uid, status: resp.status});
+    throw new HttpsError('unavailable', 'AI service is temporarily down.');
+  }
+  const body = await resp.json();
+  const text =
+    body?.candidates?.[0]?.content?.parts
+      ?.map((p) => p.text || '')
+      .join('')
+      .trim() || '';
+  if (!text) {
+    throw new HttpsError('internal', 'AI returned an empty answer.');
+  }
+  return {reply: text.slice(0, 2000), mode: 'gemini'};
 });
