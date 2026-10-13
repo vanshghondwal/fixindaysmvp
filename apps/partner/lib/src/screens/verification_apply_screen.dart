@@ -122,7 +122,7 @@ class _VerificationApplyScreenState extends State<VerificationApplyScreen> {
                                     ),
                                   ),
                                   FxButton(
-                                    label: 'Upload',
+                                    label: 'Upload (soon)',
                                     kind: FxButtonKind.outlined,
                                     // Disabled in demo: Firebase Storage
                                     // is not connected yet.
