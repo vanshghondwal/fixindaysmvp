@@ -139,7 +139,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           decoration: BoxDecoration(
             color: FxColors.background,
             border: Border.all(color: FxColors.borders),
-            borderRadius: const BorderRadius.circular(FxRadius.md),
+            borderRadius: BorderRadius.circular(FxRadius.md),
           ),
           child: Text(value.isEmpty ? '—' : value,
               style: FxText.body

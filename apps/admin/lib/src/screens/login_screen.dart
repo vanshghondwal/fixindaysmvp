@@ -109,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: const EdgeInsets.all(FxSpacing.sm),
                       decoration: BoxDecoration(
                         color: FxColors.error.withValues(alpha: 0.1),
-                        borderRadius: const BorderRadius.circular(FxRadius.md),
+                        borderRadius: BorderRadius.circular(FxRadius.md),
                         border: Border.all(
                             color: FxColors.error.withValues(alpha: 0.4)),
                       ),

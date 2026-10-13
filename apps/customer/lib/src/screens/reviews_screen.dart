@@ -183,7 +183,7 @@ class _ReviewFormState extends State<_ReviewForm> {
               color: FxColors.background,
               border: Border.all(color: FxColors.borders),
               borderRadius:
-                  const BorderRadius.circular(FxRadius.md),
+                  BorderRadius.circular(FxRadius.md),
             ),
             child: const Text(
               'Only completed bookings that you haven\'t reviewed yet '

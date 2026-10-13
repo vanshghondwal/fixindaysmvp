@@ -161,7 +161,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                 decoration: BoxDecoration(
                   color: FxColors.white,
                   border: Border.all(color: FxColors.borders),
-                  borderRadius: const BorderRadius.circular(FxRadius.md),
+                  borderRadius: BorderRadius.circular(FxRadius.md),
                 ),
                 child: DropdownButton<String>(
                   value: _countryCode,
@@ -215,7 +215,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
             padding: const EdgeInsets.all(FxSpacing.md),
             decoration: BoxDecoration(
               color: FxColors.warning.withValues(alpha: 0.12),
-              borderRadius: const BorderRadius.circular(FxRadius.md),
+              borderRadius: BorderRadius.circular(FxRadius.md),
             ),
             child: const Text(
               'Demo mode: any 6-digit OTP works.',

@@ -112,10 +112,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 FxCard(
                   child: RadioGroup<bool>(
                     groupValue: true,
-                    onChanged:
-                        cashEnabled ? (_) {} : null,
+                    onChanged: (_) {},
                     child: RadioListTile<bool>(
                       value: true,
+                      enabled: cashEnabled,
                       title: Text(t.t('cashOnService')),
                       subtitle: Text(
                         cashEnabled

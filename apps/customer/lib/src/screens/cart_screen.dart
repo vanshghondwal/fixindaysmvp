@@ -201,12 +201,12 @@ class CartScreen extends StatelessWidget {
   Widget _stepperBtn(IconData icon, VoidCallback onTap) {
     return InkWell(
       onTap: onTap,
-      borderRadius: const BorderRadius.circular(FxRadius.sm),
+      borderRadius: BorderRadius.circular(FxRadius.sm),
       child: Container(
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
           border: Border.all(color: FxColors.borders),
-          borderRadius: const BorderRadius.circular(FxRadius.sm),
+          borderRadius: BorderRadius.circular(FxRadius.sm),
         ),
         child: Icon(icon, size: 18, color: FxColors.primary),
       ),

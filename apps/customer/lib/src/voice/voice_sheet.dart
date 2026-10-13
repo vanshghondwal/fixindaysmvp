@@ -377,7 +377,7 @@ class _VoiceSheetState extends State<VoiceSheet> {
                 decoration: BoxDecoration(
                   color: FxColors.white,
                   borderRadius:
-                      const BorderRadius.circular(FxRadius.lg),
+                      BorderRadius.circular(FxRadius.lg),
                   border: Border.all(color: FxColors.borders),
                 ),
                 child: Text(_answer,

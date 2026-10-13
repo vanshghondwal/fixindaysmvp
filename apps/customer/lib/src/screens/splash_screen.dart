@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 decoration: BoxDecoration(
                   color: FxColors.white,
                   borderRadius:
-                      const BorderRadius.circular(FxRadius.xl),
+                      BorderRadius.circular(FxRadius.xl),
                 ),
                 child: const Icon(
                   Icons.handyman,

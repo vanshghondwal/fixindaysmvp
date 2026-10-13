@@ -136,7 +136,7 @@ class _DisputeScreenState extends State<DisputeScreen> {
                                 String>(
                               value: null,
                               child:
-                                  const Text('No specific booking'),
+                                  Text('No specific booking'),
                             ),
                             ...list.map((b) =>
                                 DropdownMenuItem(

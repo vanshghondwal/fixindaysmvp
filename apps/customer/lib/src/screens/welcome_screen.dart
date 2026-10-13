@@ -62,7 +62,7 @@ class WelcomeScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: FxColors.primary.withValues(alpha: 0.12),
                     borderRadius:
-                        const BorderRadius.circular(FxRadius.xl),
+                        BorderRadius.circular(FxRadius.xl),
                   ),
                   child: const Icon(Icons.handyman,
                       size: 44, color: FxColors.primary),

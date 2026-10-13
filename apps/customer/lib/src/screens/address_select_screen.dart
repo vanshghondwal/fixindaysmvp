@@ -166,7 +166,7 @@ class _AddressSelectScreenState
                   label: 'Continue',
                   onPressed: () async {
                     final list = await _future;
-                    if (!mounted) return;
+                    if (!context.mounted) return;
                     Address? selected;
                     try {
                       selected = list.firstWhere(
@@ -179,7 +179,6 @@ class _AddressSelectScreenState
                     // below does not promote reliably).
                     final address = selected;
                     if (address == null) {
-                      if (!mounted) return;
                       ScaffoldMessenger.of(context)
                           .showSnackBar(
                         const SnackBar(
@@ -188,7 +187,6 @@ class _AddressSelectScreenState
                       );
                       return;
                     }
-                    if (!mounted) return;
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => ScheduleScreen(
