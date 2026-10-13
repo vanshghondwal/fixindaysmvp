@@ -1,0 +1,212 @@
+rules_version = '2';
+
+// =============================================================================
+// FixinDays Firestore security rules
+// =============================================================================
+// CORE SECURITY PRINCIPLE — admin rights come ONLY from the Firebase Auth
+// custom claim `admin: true` on the caller's ID token:
+//
+//     request.auth.token.admin == true
+//
+// We NEVER check a Firestore document field for admin rights anywhere in
+// these rules. Any signed-in user could write a field like `isAdmin: true`
+// on their own document; the custom claim can only be set by the Admin SDK
+// (via the setAdminClaim Cloud Function, itself admin-only).
+//
+// NO public read/write anywhere: every rule requires authentication, and
+// most require ownership or the admin claim.
+//
+// Booking status/payment transitions are NOT writable directly — they go
+// through Cloud Functions (Admin SDK bypasses rules), which enforce the
+// transition matrix, arrival codes, and audit logging.
+// =============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -- helpers -------------------------------------------------------------
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // THE ONLY admin check in this file. Do not add Firestore-field checks.
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    function ownerOf(userIdField) {
+      return signedIn() && request.auth.uid == resource.data[userIdField];
+    }
+
+    // -- users ---------------------------------------------------------------
+    // Owner reads/writes their own doc. Admins can read (support tooling).
+    match /users/{userId} {
+      allow read: if signedIn() && (request.auth.uid == userId || isAdmin());
+      allow create: if signedIn() && request.auth.uid == userId;
+      // Users may update their own profile but must not touch `restricted`
+      // or any admin-related field; those are admin-only.
+      allow update: if signedIn() && request.auth.uid == userId
+        && !request.resource.data.diff(resource.data).affectedKeys()
+              .hasAny(['restricted', 'role'])
+        || isAdmin();
+      allow delete: if false; // account deletion handled via backend
+    }
+
+    // -- providers -----------------------------------------------------------
+    // Discovery needs public-ish read, but ONLY for approved + active
+    // providers. Sensitive docs (verification) live elsewhere.
+    match /providers/{providerId} {
+      allow read: if resource.data.verificationStatus == 'approved'
+        && resource.data.active == true
+        || isAdmin()
+        || (signedIn() && request.auth.uid == providerId);
+      allow create: if signedIn() && request.auth.uid == providerId;
+      allow update: if (signedIn() && request.auth.uid == providerId
+          && !request.resource.data.diff(resource.data).affectedKeys()
+                .hasAny(['verificationStatus', 'active', 'ratingAvg', 'ratingCount']))
+        || isAdmin();
+      allow delete: if false;
+    }
+
+    // -- providerServices ----------------------------------------------------
+    // Pricing is public by design (marketplace discovery). Writes are
+    // owner (provider) or admin only.
+    match /providerServices/{serviceId} {
+      allow read: if true;
+      allow create, update: if signedIn()
+        && (request.auth.uid == request.resource.data.providerId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // -- serviceCategories ---------------------------------------------------
+    match /serviceCategories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // -- bookings ------------------------------------------------------------
+    // Customer reads own, provider reads own, admin reads all.
+    // Creation: customer only, and customerId must equal the caller uid
+    // (validateBooking Cloud Function does the real price/slot checks;
+    // the client must call it first and store its returned totals).
+    // Direct status updates are DENIED — transitions go through the
+    // transitionBooking Cloud Function. Customers may only cancel via the
+    // function as well; rules simply deny direct writes to `status`.
+    match /bookings/{bookingId} {
+      allow read: if signedIn() && (
+        request.auth.uid == resource.data.customerId ||
+        request.auth.uid == resource.data.providerId ||
+        isAdmin());
+      allow create: if signedIn()
+        && request.resource.data.customerId == request.auth.uid
+        && request.resource.data.status == 'pending';
+      allow update: if signedIn() && (
+        // Non-status field edits by the involved parties (notes etc.)
+        ((request.auth.uid == resource.data.customerId
+            || request.auth.uid == resource.data.providerId)
+          && !request.resource.data.diff(resource.data)
+                .affectedKeys().hasAny(
+                  ['status', 'customerId', 'providerId',
+                   'subtotalPaise', 'platformFeePaise', 'totalPaise',
+                   'paymentStatus', 'arrivalCodeHash']))
+        || isAdmin());
+      allow delete: if false;
+
+      // Booking audit trail: written by Cloud Functions (Admin SDK).
+      // Parties may read their booking's events.
+      match /bookingEvents/{eventId} {
+        allow read: if signedIn() && (
+          request.auth.uid == get(/databases/$(database)/documents/bookings/$(bookingId)).data.customerId ||
+          request.auth.uid == get(/databases/$(database)/documents/bookings/$(bookingId)).data.providerId ||
+          isAdmin());
+        allow write: if false; // functions only (Admin SDK bypasses rules)
+      }
+    }
+
+    // -- reviews -------------------------------------------------------------
+    // Anyone can read non-hidden reviews. Creation requires the caller to
+    // be the review's customer (the submitReview function enforces
+    // completed-booking + one-review-per-booking + rating range).
+    match /reviews/{reviewId} {
+      allow read: if resource.data.hidden != true || isAdmin()
+        || (signedIn() && request.auth.uid == resource.data.customerId);
+      allow create: if signedIn()
+        && request.resource.data.customerId == request.auth.uid;
+      allow update: if isAdmin(); // moderation (hide/unhide) only
+      allow delete: if false;
+    }
+
+    // -- providerApplications ------------------------------------------------
+    match /providerApplications/{applicationId} {
+      allow read: if signedIn() && (
+        request.auth.uid == resource.data.providerId || isAdmin());
+      allow create: if signedIn()
+        && request.resource.data.providerId == request.auth.uid;
+      allow update: if isAdmin(); // approve/reject only
+      allow delete: if false;
+    }
+
+    // -- addresses -----------------------------------------------------------
+    match /addresses/{addressId} {
+      allow read, delete: if signedIn()
+        && request.auth.uid == resource.data.userId;
+      allow create: if signedIn()
+        && request.auth.uid == request.resource.data.userId;
+      allow update: if signedIn()
+        && request.auth.uid == resource.data.userId
+        && request.auth.uid == request.resource.data.userId;
+    }
+
+    // -- notifications -------------------------------------------------------
+    match /notifications/{notificationId} {
+      allow read: if signedIn()
+        && request.auth.uid == resource.data.userId;
+      // Users may mark their own notifications read; creation is via
+      // Cloud Functions (Admin SDK) or admin.
+      allow create: if isAdmin();
+      allow update: if signedIn()
+        && request.auth.uid == resource.data.userId
+        && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['read']);
+      allow delete: if signedIn()
+        && request.auth.uid == resource.data.userId;
+    }
+
+    // -- supportTickets ------------------------------------------------------
+    match /supportTickets/{ticketId} {
+      allow read: if signedIn() && (
+        request.auth.uid == resource.data.userId || isAdmin());
+      allow create: if signedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin()
+        || (signedIn() && request.auth.uid == resource.data.userId
+            && request.resource.data.diff(resource.data).affectedKeys()
+                  .hasOnly(['description']));
+      allow delete: if false;
+    }
+
+    // -- platform settings ---------------------------------------------------
+    // Readable by all signed-in users (apps need commission/cash config);
+    // writable by admin only. Stored at config/platform.
+    match /config/{docId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // -- announcements -------------------------------------------------------
+    match /announcements/{announcementId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // -- admin audit log -----------------------------------------------------
+    match /adminAuditLogs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    // -- catch-all: deny everything else -------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

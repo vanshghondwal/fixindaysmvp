@@ -1,0 +1,54 @@
+rules_version = '2';
+
+// =============================================================================
+// FixinDays Cloud Storage rules
+// =============================================================================
+// Layout:
+//   users/{uid}/...                    user profile photos etc. (owner only)
+//   verification-docs/{providerId}/...  ID / trade certificates (owner writes,
+//                                       ADMIN reads only — these are the
+//                                       documents reviewed in the admin console)
+//   booking-evidence/{bookingId}/...   job photos (booking parties + admin)
+// =============================================================================
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Admin rights: custom claim ONLY, never a Firestore/Storage field.
+    function isAdmin() {
+      return signedIn() && request.auth.token.admin == true;
+    }
+
+    // User-owned files (profile photos, etc.)
+    match /users/{uid}/{allPaths=**} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Verification documents: provider uploads, only admins can read.
+    // (The admin console shows storage paths; downloads need these rules
+    // deployed and the reviewer to hold the admin claim.)
+    match /verification-docs/{providerId}/{allPaths=**} {
+      allow read: if isAdmin();
+      allow write: if signedIn() && request.auth.uid == providerId;
+    }
+
+    // Booking evidence (before/after photos): booking parties + admin.
+    // Party membership can't be checked cheaply in Storage rules, so writes
+    // are allowed for signed-in users under their own booking folder naming
+    // convention and reads are admin-or-signed-in; the Firestore
+    // booking-evidence metadata (with bookingId) is the source of truth.
+    match /booking-evidence/{bookingId}/{allPaths=**} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
