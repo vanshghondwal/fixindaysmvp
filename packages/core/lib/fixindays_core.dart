@@ -12,3 +12,5 @@ export 'src/l10n.dart';
 export 'src/logic.dart';
 export 'src/validators.dart';
 export 'src/config.dart';
+export 'src/assistant.dart';
+export 'src/voice.dart';
