@@ -1,57 +1,52 @@
 # FixinDays 🏠🔧
-### Same Services. Brighter Days.
+### Same Services. Brighter Days. / Local Help. Brighter Days.
 
-Local home services app (Urban Company style) — **InnoHacks 4.0 · Open Innovation track**.
-Built by Team FixinDays: **Vansh, Divyansh, Nikhil** (DBRA CM SHRI, Yamuna Vihar, Delhi).
+Local home-services marketplace (Urban Company style) — **InnoHacks 4.0 · Open Innovation track**.
+Team FixinDays: **Vansh, Divyansh, Nikhil** (DBRA CM SHRI, Yamuna Vihar, Delhi).
 
-## What's in this demo build
+## Monorepo layout
 
-Full working MVP on **mock data** — no backend needed to run:
+| Path | What it is |
+|---|---|
+| `apps/customer/` | FixinDays Customer app (Flutter, Android + Web) |
+| `apps/partner/` | FixinDays Partner app for providers (Flutter, Android + Web) |
+| `apps/admin/` | Admin panel (Flutter Web) — verification, moderation, disputes, settings |
+| `packages/core/` | Shared theme, models, repositories, widgets, l10n (en/hi), business logic |
+| `functions/` | Node.js Cloud Functions — booking validation, status guards, arrival codes, reviews |
+| `firestore.rules` / `firestore.indexes.json` / `storage.rules` | Backend security + indexes |
+| `.github/workflows/` | CI: Android APK builds + web builds + core tests |
+| `lib/` (repo root) | Legacy single-app MVP (kept for history; superseded by `apps/`) |
 
-- **Home** — search bar, 6-tile category grid (Plumber, Electrician, Carpenter,
-  Painter, AC Repair, Many More), trust badges (Verified Providers / Transparent
-  Pricing / Real Reviews), top-rated providers
-- **Providers** — per-category listing with rating ⭐, reviews count, ₹(onwards)
-  pricing, verified tick, Book button (deck data: Rajesh Electricals 4.8 ₹299,
-  Sharma Home Services 4.5 ₹249, LocalFix Riders 4.7 ₹199)
-- **Booking flow** — describe the issue → pick day + time slot → address →
-  price summary → Confirm Booking
-- **My Bookings** — booking list with status + cancel
-- **Profile** — addresses, history, reviews, about
+## Demo mode (important)
 
-## Run it
+Until Firebase is configured, all three apps run on **clearly labelled demo
+seed data** with a "Demo mode" banner in the UI. Demo data is never presented
+as real marketplace data. See `FIREBASE_SETUP.md` for going live.
 
-Needs Flutter SDK (3.2+) installed:
+## Quick start (per app)
 
 ```bash
-cd fixindays
+cd apps/customer            # or apps/partner, apps/admin
+flutter create --platforms=android,ios,web .   # generates platform folders
 flutter pub get
-flutter run            # debug on connected device / emulator
-flutter build apk      # release APK for hackathon demo
+flutter run                 # demo mode, no backend needed
 ```
 
-## Connect Firebase (needs Vansh's Google account)
+APKs are built automatically by GitHub Actions on every push to `main`
+(see the **Actions** tab → Artifacts): `fixindays-customer-apk`,
+`fixindays-partner-apk`. Web builds: customer + admin.
 
-```bash
-dart pub global activate flutterfire_cli
-flutterfire configure          # generates lib/firebase_options.dart
-```
+## Going live
 
-Then in `lib/main.dart` uncomment `FirebaseService.init()`, and swap the
-mock source in `MockData` with the `FirebaseService` stubs in
-`lib/services/firebase_service.dart`. Firestore collections: `users`,
-`providers`, `bookings`, `reviews` (see deck page 5 — Tech Stack).
+1. Read `FIREBASE_SETUP.md` — exact steps for Firebase project, Auth,
+   Firestore, Storage, Functions, FCM, App Check.
+2. Set `AppConfig.useDemoData = false` (in `packages/core/lib/src/config.dart`)
+   once the backend is configured.
+3. Credentials you must provide (never committed): Firebase project,
+   Razorpay key id/secret, Google Maps API key, Gemini server key.
+   See `FIREBASE_SETUP.md` for where each goes.
 
-## Hackathon demo tips
+## Honest status
 
-1. Open Home → tap **Electrician** → shows the exact deck rows (Rajesh
-   Electricals 4.8 ⭐ ₹299 onwards + Book)
-2. Book → pick "Today" slot → Confirm → switch to **Bookings** tab
-3. Talking points from the deck: transparent pricing, verified providers,
-   real reviews, single codebase Flutter + Firebase, scalable architecture
-
-## Status
-
-- [x] Full mock-data MVP (this folder)
-- [ ] Firebase connect (needs user's Google account)
-- [ ] Release APK build (needs Flutter + Android SDK on a build machine)
+`STATUS_REPORT.md` lists every screen, what is demo vs real, what was
+tested, and what still needs credentials or manual steps.
