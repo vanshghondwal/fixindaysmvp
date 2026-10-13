@@ -79,11 +79,11 @@ class FirestoreAdminRepository implements AdminRepository {
         .count()
         .get();
     return AdminDashboard(
-      totalCustomers: (agg[0] as AggregateQuerySnapshot).count ?? 0,
-      totalProviders: (agg[1] as AggregateQuerySnapshot).count ?? 0,
-      pendingApplications: (agg[2] as AggregateQuerySnapshot).count ?? 0,
-      activeBookings: (agg[3] as AggregateQuerySnapshot).count ?? 0,
-      openTickets: (agg[4] as AggregateQuerySnapshot).count ?? 0,
+      totalCustomers: agg[0].count ?? 0,
+      totalProviders: agg[1].count ?? 0,
+      pendingApplications: agg[2].count ?? 0,
+      activeBookings: agg[3].count ?? 0,
+      openTickets: agg[4].count ?? 0,
       bookingsToday: todayCount.count ?? 0,
     );
   }

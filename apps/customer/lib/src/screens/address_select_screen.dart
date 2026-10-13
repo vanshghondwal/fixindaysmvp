@@ -170,7 +170,11 @@ class _AddressSelectScreenState
                     } catch (_) {
                       selected = null;
                     }
-                    if (selected == null) {
+                    // Copy to a final local so Dart promotes it to non-null
+                    // (a mutable local captured in the route builder closure
+                    // below does not promote reliably).
+                    final address = selected;
+                    if (address == null) {
                       if (!mounted) return;
                       ScaffoldMessenger.of(context)
                           .showSnackBar(
@@ -187,7 +191,7 @@ class _AddressSelectScreenState
                           provider: widget.provider,
                           items: widget.items,
                           totals: widget.totals,
-                          address: selected,
+                          address: address,
                         ),
                       ),
                     );

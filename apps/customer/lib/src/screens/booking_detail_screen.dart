@@ -167,6 +167,7 @@ class _BookingDetailScreenState
 
   @override
   Widget build(BuildContext context) {
+    final t = FxLocalizations.of(context);
     return VoiceScreenTag(
       screenKey: 'booking',
       child: Scaffold(

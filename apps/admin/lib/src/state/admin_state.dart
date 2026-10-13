@@ -39,9 +39,9 @@ class AdminState extends ChangeNotifier {
   late final AdminRepository _repo;
   AdminRepository get repo => _repo;
   DemoAdminRepository? get demoRepo =>
-      _repo is DemoAdminRepository ? _repo as DemoAdminRepository : null;
+      _repo is DemoAdminRepository ? _repo : null;
   FirestoreAdminRepository? get firestoreRepo => _repo is FirestoreAdminRepository
-      ? _repo as FirestoreAdminRepository
+      ? _repo
       : null;
 
   bool _demoMode = true;
