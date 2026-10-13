@@ -1,5 +1,7 @@
-/// Partner dashboard: greeting, real stat cards, active-job banner, quick
-/// actions. Stats are computed from the demo repositories — no fake charts.
+/// Partner dashboard — maximalism edition.
+///
+/// Gradient hero greeting, bold stat cards, incoming requests as colorful
+/// cards, quick actions grid. Stats computed from demo repos — no fake charts.
 library;
 
 import 'package:fixindays_core/fixindays_core.dart';
@@ -12,8 +14,8 @@ import 'active_service_screen.dart';
 import 'availability_screen.dart';
 import 'catalogue_screen.dart';
 import 'earnings_screen.dart';
-import 'history_screen.dart';
 import 'notifications_screen.dart';
+import 'request_detail_screen.dart';
 import 'requests_screen.dart';
 import 'reviews_screen.dart';
 import 'settings_screen.dart';
@@ -109,12 +111,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final t = FxLocalizations.of(context);
     final name = state.profile?.businessName ?? state.user?.name ?? 'Partner';
 
-    return Scaffold(
+    return MaxScaffold(
       appBar: AppBar(
-        title: const Text('FixinDays Partner'),
+        backgroundColor: MaxColors.cream,
+        foregroundColor: MaxColors.ink,
+        elevation: 0,
+        title: const Text('FixinDays Partner', style: MaxText.title),
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications_outlined),
+            icon: const Icon(Icons.notifications_outlined,
+                color: MaxColors.orange),
             tooltip: t.t('notifications'),
             onPressed: () => _push(const NotificationsScreen()),
           ),
@@ -125,13 +131,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: RefreshIndicator(
+              color: MaxColors.orange,
+              backgroundColor: MaxColors.cardWhite,
               onRefresh: () async => _refresh(),
               child: FutureBuilder<_DashboardData>(
                 future: _future,
                 builder: (context, snap) {
                   if (snap.connectionState == ConnectionState.waiting) {
                     return const SingleChildScrollView(
-                      padding: EdgeInsets.all(FxSpacing.lg),
+                      padding: EdgeInsets.all(16),
                       child: FxLoadingList(),
                     );
                   }
@@ -144,61 +152,51 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   final d = snap.data!;
                   return SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(FxSpacing.lg),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text('Namaste, $name', style: FxText.headline),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Here is your business at a glance.',
-                          style: FxText.body
-                              .copyWith(color: FxColors.secondaryText),
-                        ),
+                        _hero(name, d),
                         const SizedBox(height: 16),
-                        if (d.activeJob != null)
+                        _statsCard(d, state),
+                        if (d.activeJob != null) ...[
+                          const SizedBox(height: 16),
                           _activeJobCard(d.activeJob!),
-                        _statGrid(d, t),
-                        const SizedBox(height: 16),
-                        const FxSectionHeader(
-                            title: 'Quick actions', onAction: null),
+                        ],
                         const SizedBox(height: 8),
-                        _quickTile(
-                          Icons.event_outlined,
-                          'Upcoming jobs',
-                          '${d.upcoming.length} scheduled',
-                          () => _push(const UpcomingScreen()),
+                        MaxSectionHeader(
+                          title: 'Incoming requests',
+                          actionLabel: d.incoming.isEmpty
+                              ? null
+                              : 'View all',
+                          onAction: d.incoming.isEmpty
+                              ? null
+                              : () => _push(const RequestsScreen()),
                         ),
-                        _quickTile(
-                          Icons.inventory_2_outlined,
-                          t.t('services'),
-                          'Manage your catalogue',
-                          () => _push(const CatalogueScreen()),
-                        ),
-                        _quickTile(
-                          Icons.schedule_outlined,
-                          'Availability',
-                          'Working days & hours',
-                          () => _push(const AvailabilityScreen()),
-                        ),
-                        _quickTile(
-                          Icons.star_outline,
-                          t.t('reviews'),
-                          'What customers say',
-                          () => _push(const ReviewsScreen()),
-                        ),
-                        _quickTile(
-                          Icons.support_agent_outlined,
-                          t.t('helpSupport'),
-                          'Raise a ticket',
-                          () => _push(const SupportScreen()),
-                        ),
-                        _quickTile(
-                          Icons.settings_outlined,
-                          t.t('settings'),
-                          'Language, sign out & more',
-                          () => _push(const SettingsScreen()),
-                        ),
+                        if (d.incoming.isEmpty)
+                          const MaxCard(
+                            shadowColor: MaxColors.sky,
+                            child: Row(
+                              children: [
+                                Icon(Icons.inbox_outlined,
+                                    color: MaxColors.sky),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    'No pending requests. New customer bookings will pop up here.',
+                                    style: MaxText.body,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        else
+                          ...d.incoming
+                              .take(3)
+                              .map((b) => _requestCard(b, state)),
+                        const SizedBox(height: 8),
+                        const MaxSectionHeader(title: 'Quick actions'),
+                        _quickGrid(t),
                       ],
                     ),
                   );
@@ -211,125 +209,219 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  /// Gradient hero: greeting + net earnings spotlight (tap → earnings).
+  Widget _hero(String name, _DashboardData d) {
+    return GestureDetector(
+      onTap: () => _push(const EarningsScreen()),
+      child: MaxHeroCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Namaste, $name 👋', style: MaxText.onGradientBig.copyWith(fontSize: 24)),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'Here is your business at a glance.',
+                      style: MaxText.onGradient,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.25),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: const Icon(Icons.handyman,
+                    color: Colors.white, size: 30),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Container(
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.22),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('NET EARNINGS',
+                        style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            letterSpacing: 1.2)),
+                    SizedBox(height: 2),
+                    Text('Tap to see breakdown',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white)),
+                  ],
+                ),
+                Text(formatInr(d.earnings.netPaise),
+                    style: MaxText.onGradientBig),
+              ],
+            ),
+          ),
+        ],
+      ),
+      ),
+    );
+  }
+
+  /// Bold stat strip: requests / today's jobs / rating.
+  Widget _statsCard(_DashboardData d, PartnerState state) {
+    final rating = state.profile?.ratingAvg ?? 0.0;
+    return MaxCard(
+      shadowColor: MaxColors.purple,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          MaxStat(
+            value: '${d.incoming.length}',
+            label: 'Requests',
+            accent: MaxColors.coral,
+          ),
+          Container(width: 1, height: 44, color: MaxColors.line),
+          MaxStat(
+            value: '${d.upcomingToday}',
+            label: "Today's jobs",
+            accent: MaxColors.sky,
+          ),
+          Container(width: 1, height: 44, color: MaxColors.line),
+          MaxStat(
+            value: rating > 0
+                ? '${rating.toStringAsFixed(1)}★'
+                : '—',
+            label: 'Rating',
+            accent: const Color(0xFFB8860B),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _activeJobCard(Booking b) {
+    return MaxCard(
+      shadowColor: MaxColors.mint,
+      onTap: () => _push(const ActiveServiceScreen()),
+      child: Row(
+        children: [
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: MaxColors.mintSoft,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(Icons.directions_car,
+                color: MaxColors.mint, size: 28),
+          ),
+          const SizedBox(width: 12),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Ongoing job — tap to manage',
+                    style: MaxText.title),
+                SizedBox(height: 2),
+                MaxPill(
+                    label: 'LIVE',
+                    bg: MaxColors.mintSoft,
+                    fg: Color(0xFF1E9E50)),
+              ],
+            ),
+          ),
+          const Icon(Icons.chevron_right, color: MaxColors.inkFaint),
+        ],
+      ),
+    );
+  }
+
+  Widget _requestCard(Booking b, PartnerState state) {
+    final c = state.ops.demoCustomerContact(b.customerId);
+    final services = b.items.map((i) => i.serviceName).join(', ');
     return Padding(
-      padding: const EdgeInsets.only(bottom: FxSpacing.md),
-      child: FxCard(
-        child: Row(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: MaxCard(
+        shadowColor: MaxColors.coral,
+        onTap: () => Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (_) => RequestDetailScreen(bookingId: b.id),
+            ))
+            .then((_) => _refresh()),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: FxColors.navy.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(FxRadius.md),
-              ),
-              child:
-                  const Icon(Icons.directions_car, color: FxColors.navy),
+            Row(
+              children: [
+                const MaxPill(
+                    label: 'NEW REQUEST',
+                    bg: MaxColors.coralSoft,
+                    fg: MaxColors.coral),
+                const Spacer(),
+                Text(formatSlot(b.scheduledAt),
+                    style: MaxText.caption),
+              ],
             ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Ongoing job', style: FxText.subtitle),
-                  Text(formatSlot(b.scheduledAt), style: FxText.caption),
-                ],
-              ),
-            ),
-            FxButton(
-              label: 'Open',
-              onPressed: () => _push(const ActiveServiceScreen()),
-            ),
+            const SizedBox(height: 8),
+            Text(services,
+                style: MaxText.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis),
+            const SizedBox(height: 2),
+            Text('${c['name']} • ${formatInr(b.totalPaise)}',
+                style: MaxText.body),
           ],
         ),
       ),
     );
   }
 
-  Widget _statGrid(_DashboardData d, FxLocalizations t) {
-    final cards = [
-      (
-        '${d.incoming.length}',
-        t.t('requests'),
-        Icons.inbox_outlined,
-        FxColors.warning,
-        () => _push(const RequestsScreen())
-      ),
-      (
-        '${d.upcomingToday}',
-        'Jobs today',
-        Icons.event_outlined,
-        FxColors.primary,
-        () => _push(const UpcomingScreen())
-      ),
-      (
-        '${d.completedThisWeek}',
-        'Done this week',
-        Icons.check_circle_outline,
-        FxColors.darkGreen,
-        () => _push(const HistoryScreen())
-      ),
-      (
-        formatInr(d.earnings.netPaise),
-        'Net earnings',
-        Icons.payments_outlined,
-        FxColors.navy,
-        () => _push(const EarningsScreen())
-      ),
+  Widget _quickGrid(FxLocalizations t) {
+    final tiles = [
+      (Icons.event_outlined, 'Upcoming', 3,
+          () => _push(const UpcomingScreen())),
+      (Icons.inventory_2_outlined, t.t('services'), 0,
+          () => _push(const CatalogueScreen())),
+      (Icons.schedule_outlined, 'Availability', 7,
+          () => _push(const AvailabilityScreen())),
+      (Icons.star_outline, t.t('reviews'), 1,
+          () => _push(const ReviewsScreen())),
+      (Icons.support_agent_outlined, t.t('helpSupport'), 4,
+          () => _push(const SupportScreen())),
+      (Icons.settings_outlined, t.t('settings'), 5,
+          () => _push(const SettingsScreen())),
     ];
     return GridView.count(
-      crossAxisCount: 2,
+      crossAxisCount: 3,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       mainAxisSpacing: 12,
       crossAxisSpacing: 12,
-      childAspectRatio: 1.35,
-      children: cards.map((c) {
-        return FxCard(
-          onTap: c.$5,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(c.$3, color: c.$4),
-              const SizedBox(height: 8),
-              Text(c.$1,
-                  style: FxText.headline.copyWith(fontSize: 20)),
-              Text(c.$2, style: FxText.caption),
-            ],
-          ),
+      childAspectRatio: 0.95,
+      children: tiles.map((tile) {
+        return MaxCategoryTile(
+          icon: tile.$1,
+          label: tile.$2,
+          colorIndex: tile.$3,
+          onTap: tile.$4,
         );
       }).toList(),
-    );
-  }
-
-  Widget _quickTile(
-      IconData icon, String title, String subtitle, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: FxSpacing.sm),
-      child: FxCard(
-        onTap: onTap,
-        padding: const EdgeInsets.symmetric(
-            horizontal: FxSpacing.md, vertical: 12),
-        child: Row(
-          children: [
-            Icon(icon, color: FxColors.primary),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: FxText.subtitle),
-                  Text(subtitle, style: FxText.caption),
-                ],
-              ),
-            ),
-            const Icon(Icons.chevron_right,
-                color: FxColors.secondaryText),
-          ],
-        ),
-      ),
     );
   }
 }

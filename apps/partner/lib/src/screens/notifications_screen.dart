@@ -1,4 +1,7 @@
-/// Notifications: live stream, tap to mark read.
+/// Notifications — maximalism edition.
+///
+/// Colorful cards per notification kind, NEW pills on unread items,
+/// tap to mark read.
 library;
 
 import 'package:fixindays_core/fixindays_core.dart';
@@ -28,20 +31,37 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     };
   }
 
+  (Color, Color) _colorsFor(NotificationKind kind) {
+    return switch (kind) {
+      NotificationKind.booking => (MaxColors.skySoft, MaxColors.sky),
+      NotificationKind.payment => (MaxColors.mintSoft, MaxColors.mint),
+      NotificationKind.review => (MaxColors.sunSoft, const Color(0xFFB8860B)),
+      NotificationKind.support => (MaxColors.purpleSoft, MaxColors.purple),
+      NotificationKind.system => (MaxColors.creamDeep, MaxColors.inkSoft),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final t = FxLocalizations.of(context);
     final state = context.read<PartnerState>();
     final user = state.user;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(t.t('notifications'))),
+    return MaxScaffold(
+      appBar: AppBar(
+        backgroundColor: MaxColors.cream,
+        foregroundColor: MaxColors.ink,
+        elevation: 0,
+        title: Text(t.t('notifications'), style: MaxText.title),
+      ),
       body: Column(
         children: [
           if (AppConfig.useDemoData) const DemoBanner(),
           if (user == null)
             const Expanded(
-              child: Center(child: Text('Please sign in.')),
+              child: Center(
+                  child: Text('Please sign in.',
+                      style: MaxText.body)),
             )
           else
             Expanded(
@@ -51,7 +71,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 builder: (context, snap) {
                   if (snap.connectionState == ConnectionState.waiting) {
                     return const SingleChildScrollView(
-                      padding: EdgeInsets.all(FxSpacing.lg),
+                      padding: EdgeInsets.all(16),
                       child: FxLoadingList(),
                     );
                   }
@@ -72,79 +92,92 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                     );
                   }
                   return ListView.separated(
-                    padding: const EdgeInsets.all(FxSpacing.lg),
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                     itemCount: items.length,
                     separatorBuilder: (_, __) =>
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
                     itemBuilder: (context, i) {
                       final n = items[i];
-                      return FxCard(
-                        onTap: n.read
-                            ? null
-                            : () =>
-                                state.notifications.markRead(n.id),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: FxSpacing.md, vertical: 12),
-                        child: Row(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: (n.read
-                                        ? FxColors.secondaryText
-                                        : FxColors.primary)
-                                    .withValues(alpha: 0.12),
-                                borderRadius: BorderRadius.circular(
-                                    FxRadius.md),
+                      final (bg, fg) = _colorsFor(n.kind);
+                      return Opacity(
+                        opacity: n.read ? 0.72 : 1.0,
+                        child: MaxCard(
+                          shadowColor: n.read ? MaxColors.inkFaint : fg,
+                          onTap: n.read
+                              ? null
+                              : () =>
+                                  state.notifications.markRead(n.id),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 12),
+                          child: Row(
+                            crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 46,
+                                height: 46,
+                                decoration: BoxDecoration(
+                                  color: bg,
+                                  borderRadius:
+                                      BorderRadius.circular(15),
+                                ),
+                                child: Icon(
+                                  _iconFor(n.kind),
+                                  color: fg,
+                                  size: 24,
+                                ),
                               ),
-                              child: Icon(
-                                _iconFor(n.kind),
-                                color: n.read
-                                    ? FxColors.secondaryText
-                                    : FxColors.primary,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          n.title,
-                                          style: n.read
-                                              ? FxText.body
-                                              : FxText.subtitle,
-                                        ),
-                                      ),
-                                      if (!n.read)
-                                        Container(
-                                          width: 10,
-                                          height: 10,
-                                          decoration:
-                                              const BoxDecoration(
-                                            color: FxColors.primary,
-                                            shape: BoxShape.circle,
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            n.title,
+                                            style: n.read
+                                                ? MaxText.body.copyWith(
+                                                    fontWeight:
+                                                        FontWeight.w700)
+                                                : MaxText.title.copyWith(
+                                                    fontSize: 15),
                                           ),
                                         ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(n.body,
-                                      style: FxText.caption),
-                                  const SizedBox(height: 4),
-                                  Text(formatDay(n.createdAt),
-                                      style: FxText.caption),
-                                ],
+                                        if (!n.read)
+                                          const MaxPill(
+                                              label: 'NEW',
+                                              bg: MaxColors.coralSoft,
+                                              fg: MaxColors.coral),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(n.body,
+                                        style: MaxText.body.copyWith(
+                                            fontSize: 13)),
+                                    const SizedBox(height: 6),
+                                    Container(
+                                      padding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 3),
+                                      decoration: BoxDecoration(
+                                        color: MaxColors.creamDeep,
+                                        borderRadius:
+                                            BorderRadius.circular(99),
+                                      ),
+                                      child: Text(
+                                          formatDay(n.createdAt),
+                                          style: MaxText.caption.copyWith(
+                                              fontSize: 11)),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

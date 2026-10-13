@@ -1,4 +1,5 @@
-/// Root shell after auth: bottom navigation (Home, Bookings, Profile).
+/// Root shell after auth — MAXIMALISM edition: colorful bottom
+/// navigation with vibrant selected pill. Tab logic unchanged.
 library;
 
 import 'package:fixindays_core/fixindays_core.dart';
@@ -39,30 +40,92 @@ class _RootShellState extends State<RootShell> {
   Widget build(BuildContext context) {
     final t = FxLocalizations.of(context);
     return Scaffold(
+      backgroundColor: MaxColors.cream,
       body: IndexedStack(index: _index, children: _screens),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (i) {
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: MaxColors.cardWhite,
+          boxShadow: [
+            BoxShadow(
+              color: MaxColors.orange.withValues(alpha: 0.12),
+              blurRadius: 24,
+              offset: const Offset(0, -6),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 16, vertical: 10),
+            child: Row(
+              children: [
+                _navItem(0, Icons.home_outlined, Icons.home,
+                    t.t('home')),
+                _navItem(
+                    1,
+                    Icons.calendar_month_outlined,
+                    Icons.calendar_month_rounded,
+                    t.t('bookings')),
+                _navItem(2, Icons.person_outline,
+                    Icons.person_rounded, t.t('profile')),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _navItem(
+      int i, IconData icon, IconData activeIcon, String label) {
+    final selected = _index == i;
+    final gradients = [
+      MaxColors.heroGradient,
+      MaxColors.oceanGradient,
+      MaxColors.grapeGradient,
+    ];
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
           VoiceScreenTracker.setBase(_voiceKeys[i]);
           setState(() => _index = i);
         },
-        destinations: [
-          NavigationDestination(
-            icon: const Icon(Icons.home_outlined),
-            selectedIcon: const Icon(Icons.home),
-            label: t.t('home'),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 220),
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            gradient: selected ? gradients[i] : null,
+            color: selected ? null : Colors.transparent,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: selected
+                ? maxShadow(
+                    [MaxColors.orange, MaxColors.sky, MaxColors.purple][i],
+                    blur: 12)
+                : null,
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.calendar_month_outlined),
-            selectedIcon: const Icon(Icons.calendar_month),
-            label: t.t('bookings'),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(selected ? activeIcon : icon,
+                  color: selected
+                      ? Colors.white
+                      : MaxColors.inkFaint,
+                  size: 24),
+              const SizedBox(height: 3),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight:
+                      selected ? FontWeight.w800 : FontWeight.w600,
+                  color: selected
+                      ? Colors.white
+                      : MaxColors.inkFaint,
+                ),
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: const Icon(Icons.person_outline),
-            selectedIcon: const Icon(Icons.person),
-            label: t.t('profile'),
-          ),
-        ],
+        ),
       ),
     );
   }
