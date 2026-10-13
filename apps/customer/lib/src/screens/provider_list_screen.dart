@@ -1,4 +1,5 @@
-/// Provider list with rating filter and rating/price sorting.
+/// Provider list — MAXIMALISM edition: vibrant header, colorful filter
+/// chips and sort pill, rich provider cards. Filter/sort logic unchanged.
 ///
 /// Price sorting is done client-side from each provider's service list —
 /// the demo catalogue notes that server-side price filtering isn't wired.
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
+import '../widgets/max_provider_card.dart';
 import 'provider_profile_screen.dart';
 
 typedef _Priced = ({ProviderProfile provider, int? priceFrom});
@@ -79,75 +81,94 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
     final t = FxLocalizations.of(context);
     return VoiceScreenTag(
       screenKey: 'providers',
-      child: Scaffold(
-      appBar: AppBar(title: Text(t.t('providers'))),
+      child: MaxScaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (AppConfig.useDemoData) const DemoBanner(),
+          // ---- Vibrant header ----
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-                FxSpacing.md, FxSpacing.md, FxSpacing.md, 0),
-            child: Wrap(
-              spacing: 8,
-              crossAxisAlignment: WrapCrossAlignment.center,
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+            child: Row(
               children: [
-                FilterChip(
-                  label: const Text('Any rating'),
-                  selected: _minRating == null,
-                  onSelected: (_) {
-                    _minRating = null;
-                    _refresh();
-                  },
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: MaxColors.purpleSoft,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(Icons.arrow_back,
+                        color: MaxColors.purple),
+                  ),
                 ),
-                FilterChip(
-                  label: const Text('4.0+'),
-                  selected: _minRating == 4.0,
-                  onSelected: (_) {
-                    _minRating = 4.0;
-                    _refresh();
-                  },
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(t.t('providers'),
+                      style: MaxText.headline),
                 ),
-                FilterChip(
-                  label: const Text('4.5+'),
-                  selected: _minRating == 4.5,
-                  onSelected: (_) {
-                    _minRating = 4.5;
-                    _refresh();
-                  },
-                ),
-                DropdownButton<String>(
-                  value: _sort,
-                  items: const [
-                    DropdownMenuItem(
-                        value: 'rating',
-                        child: Text('Top rated')),
-                    DropdownMenuItem(
-                        value: 'priceAsc',
-                        child: Text('Price: low to high')),
-                    DropdownMenuItem(
-                        value: 'priceDesc',
-                        child: Text('Price: high to low')),
-                  ],
-                  onChanged: (v) {
-                    if (v != null) {
-                      _sort = v;
-                      _refresh();
-                    }
-                  },
+                // Sort pill
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: MaxColors.cardWhite,
+                    borderRadius: BorderRadius.circular(99),
+                    boxShadow:
+                        maxShadow(MaxColors.orange, blur: 8),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _sort,
+                      icon: const Icon(
+                          Icons.sort_rounded,
+                          color: MaxColors.orange,
+                          size: 18),
+                      style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w800,
+                          color: MaxColors.ink),
+                      items: const [
+                        DropdownMenuItem(
+                            value: 'rating',
+                            child: Text('Top rated')),
+                        DropdownMenuItem(
+                            value: 'priceAsc',
+                            child: Text('Price ↑')),
+                        DropdownMenuItem(
+                            value: 'priceDesc',
+                            child: Text('Price ↓')),
+                      ],
+                      onChanged: (v) {
+                        if (v != null) {
+                          _sort = v;
+                          _refresh();
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: FxSpacing.md, vertical: 8),
-            child: Text(
-              'Distances aren\'t shown — precise location needs a Maps API '
-              'key (see FIREBASE_SETUP.md).',
-              style: FxText.caption,
+          const SizedBox(height: 12),
+          // ---- Colorful rating filter chips ----
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                _filterChip('Any rating', null, 0),
+                const SizedBox(width: 8),
+                _filterChip('4.0+ ⭐', 4.0, 1),
+                const SizedBox(width: 8),
+                _filterChip('4.5+ 🌟', 4.5, 2),
+              ],
             ),
           ),
+          const SizedBox(height: 8),
           Expanded(
             child: FutureBuilder<List<_Priced>>(
               future: _future,
@@ -155,7 +176,7 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
                 if (snap.connectionState ==
                     ConnectionState.waiting) {
                   return const Padding(
-                    padding: EdgeInsets.all(FxSpacing.md),
+                    padding: EdgeInsets.all(16),
                     child: FxLoadingList(),
                   );
                 }
@@ -174,19 +195,18 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
                   );
                 }
                 return ListView.builder(
-                  padding: const EdgeInsets.all(FxSpacing.md),
+                  padding: const EdgeInsets.all(16),
                   itemCount: list.length,
                   itemBuilder: (_, i) {
                     final e = list[i];
                     return Padding(
                       padding:
                           const EdgeInsets.only(bottom: 12),
-                      child: ProviderCard(
+                      child: MaxProviderCard(
                         provider: e.provider,
                         priceFromPaise: e.priceFrom,
+                        colorIndex: i,
                         onTap: () =>
-                            _openProvider(e.provider.id),
-                        onBook: () =>
                             _openProvider(e.provider.id),
                       ),
                     );
@@ -198,6 +218,38 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
         ],
       ),
     ));
+  }
+
+  Widget _filterChip(String label, double? value, int colorIndex) {
+    final selected = _minRating == value;
+    final (bg, fg) = MaxColors.pairFor(colorIndex);
+    return GestureDetector(
+      onTap: () {
+        _minRating = value;
+        _refresh();
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(
+            horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          gradient: selected ? MaxColors.heroGradient : null,
+          color: selected ? null : bg,
+          borderRadius: BorderRadius.circular(99),
+          boxShadow: selected
+              ? maxShadow(MaxColors.orange, blur: 10)
+              : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w800,
+            color: selected ? Colors.white : fg,
+          ),
+        ),
+      ),
+    );
   }
 
   void _openProvider(String id) {

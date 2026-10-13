@@ -1,5 +1,6 @@
-/// Customer home: greeting, address, search, categories, trust badges,
-/// top-rated providers and recent bookings.
+/// Customer home — MAXIMALISM edition: vibrant greeting header, gradient
+/// hero with search + live stats, colorful category grid, top-rated pros
+/// and recent bookings. All data logic unchanged.
 library;
 
 import 'package:fixindays_core/fixindays_core.dart';
@@ -8,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
+import '../widgets/max_bits.dart';
+import '../widgets/max_provider_card.dart';
 import 'booking_detail_screen.dart';
 import 'bookings_screen.dart';
 import 'cart_screen.dart';
@@ -96,68 +99,23 @@ class _HomeScreenState extends State<HomeScreen> {
         : user.name.trim().split(' ').first;
     final t = FxLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('${_greeting()}, $firstName'),
-            FutureBuilder<Address?>(
-              future: _future.then((d) => d.address),
-              builder: (_, snap) {
-                final a = snap.data;
-                return Text(
-                  a == null ? 'Add your address' : a.short,
-                  style: const TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.w400),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                );
-              },
-            ),
-          ],
-        ),
-        actions: [
-          StreamBuilder<List<NotificationItem>>(
-            stream: app.repos.notifications.watch(user.id),
-            builder: (_, snap) {
-              final unread =
-                  (snap.data ?? []).where((n) => !n.read).length;
-              return IconButton(
-                icon: _badge(Icons.notifications_outlined, unread),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (_) =>
-                          const NotificationsScreen()),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: _badge(
-                Icons.shopping_cart_outlined, app.cart.totalQty),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const CartScreen()),
-            ),
-          ),
-        ],
-      ),
+    return MaxScaffold(
       body: RefreshIndicator(
         onRefresh: _refresh,
+        color: MaxColors.orange,
         child: FutureBuilder<_HomeData>(
           future: _future,
           builder: (_, snap) {
             if (snap.connectionState == ConnectionState.waiting) {
               return const SingleChildScrollView(
-                padding: EdgeInsets.all(FxSpacing.md),
+                padding: EdgeInsets.all(16),
                 child: FxLoadingList(),
               );
             }
             if (snap.hasError) {
               return ErrorPanel(
                 message: snap.error.toString(),
-                onRetry: () =>
-                    setState(() => _future = _load()),
+                onRetry: () => setState(() => _future = _load()),
               );
             }
             final data = snap.data!;
@@ -167,31 +125,104 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   if (AppConfig.useDemoData) const DemoBanner(),
+                  // ---- Vibrant header ----
+                  _header(context, app, user, firstName, data.address),
+                  const SizedBox(height: 12),
+                  // ---- Gradient hero with search + stats ----
                   Padding(
-                    padding: const EdgeInsets.all(FxSpacing.md),
-                    child: GestureDetector(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (_) => const SearchScreen()),
-                      ),
-                      child: AbsorbPointer(
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                            hintText: t.t('searchServices'),
-                            prefixIcon: const Icon(Icons.search),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16),
+                    child: MaxHeroCard(
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Home services,\n Sorted. ✨',
+                            style: MaxText.onGradientBig,
                           ),
-                        ),
+                          const SizedBox(height: 6),
+                          Text(
+                            'Verified pros at your doorstep',
+                            style: MaxText.onGradient.copyWith(
+                                color: Colors.white
+                                    .withValues(alpha: 0.92)),
+                          ),
+                          const SizedBox(height: 14),
+                          // Search bar
+                          GestureDetector(
+                            onTap: () =>
+                                Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      const SearchScreen()),
+                            ),
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 14),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.circular(18),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black
+                                        .withValues(alpha: 0.12),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.search,
+                                      color: MaxColors.orange),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      t.t('searchServices'),
+                                      style: MaxText.body.copyWith(
+                                          color: MaxColors
+                                              .inkFaint),
+                                    ),
+                                  ),
+                                  const Icon(
+                                      Icons.mic_none_outlined,
+                                      color: MaxColors.inkFaint),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 14),
+                          // Live stats row
+                          Row(
+                            children: [
+                              _heroStat(
+                                  '${data.categories.length}',
+                                  'Services'),
+                              _heroStat('${data.top.length}+',
+                                  'Top pros'),
+                              _heroStat(
+                                  '${data.recent.length}',
+                                  'Active'),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  // ---- Categories ----
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: FxSpacing.md),
-                    child: FxSectionHeader(
-                      title: 'Categories',
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16),
+                    child: MaxSectionHeader(
+                      title: 'What do you need? 🛠️',
                       actionLabel: 'See all',
-                      onAction: () => Navigator.of(context).push(
+                      onAction: () =>
+                          Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (_) =>
                                 const CategoriesScreen()),
@@ -200,29 +231,33 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   _categoryGrid(data.categories),
                   const SizedBox(height: 8),
+                  // ---- Trust badges ----
                   _trustBadges(),
+                  const SizedBox(height: 8),
+                  // ---- Top rated ----
                   const Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: FxSpacing.md),
-                    child: FxSectionHeader(
-                        title: 'Top rated near you'),
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child:
+                        MaxSectionHeader(title: 'Top rated near you ⭐'),
                   ),
-                  ...data.top.map((e) => Padding(
+                  ...data.top.asMap().entries.map((e) => Padding(
                         padding: const EdgeInsets.fromLTRB(
-                            FxSpacing.md, 0, FxSpacing.md, 12),
-                        child: ProviderCard(
-                          provider: e.provider,
-                          priceFromPaise: e.priceFrom,
-                          onTap: () => _openProvider(e.provider.id),
-                          onBook: () => _openProvider(e.provider.id),
+                            16, 0, 16, 12),
+                        child: MaxProviderCard(
+                          provider: e.value.provider,
+                          priceFromPaise: e.value.priceFrom,
+                          colorIndex: e.key,
+                          onTap: () =>
+                              _openProvider(e.value.provider.id),
                         ),
                       )),
+                  // ---- Recent bookings ----
                   if (data.recent.isNotEmpty) ...[
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: FxSpacing.md),
-                      child: FxSectionHeader(
-                        title: 'Recent bookings',
+                          horizontal: 16),
+                      child: MaxSectionHeader(
+                        title: 'Happening now 🔥',
                         actionLabel: 'View all',
                         onAction: () =>
                             Navigator.of(context).push(
@@ -234,8 +269,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     ...data.recent.map((b) => Padding(
                           padding: const EdgeInsets.fromLTRB(
-                              FxSpacing.md, 0, FxSpacing.md, 12),
-                          child: FxCard(
+                              16, 0, 16, 12),
+                          child: MaxCard(
+                            shadowColor: MaxColors.purple,
                             onTap: () =>
                                 Navigator.of(context).push(
                               MaterialPageRoute(
@@ -252,18 +288,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(b.providerName,
-                                          style: FxText.subtitle),
+                                          style: MaxText.title
+                                              .copyWith(
+                                                  fontSize: 15)),
                                       const SizedBox(height: 4),
                                       Text(
                                         DateFormat(
                                                 'EEE, d MMM · h:mm a')
                                             .format(b.scheduledAt),
-                                        style: FxText.caption,
+                                        style: MaxText.caption,
                                       ),
                                     ],
                                   ),
                                 ),
-                                StatusChip.booking(b.status),
+                                MaxStatusPill.booking(b.status),
                               ],
                             ),
                           ),
@@ -286,29 +324,156 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _badge(IconData icon, int count) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Icon(icon),
-        if (count > 0)
-          Positioned(
-            right: -6,
-            top: -6,
-            child: Container(
-              padding: const EdgeInsets.all(FxSpacing.xs),
-              decoration: const BoxDecoration(
-                color: FxColors.error,
-                shape: BoxShape.circle,
-              ),
-              child: Text(
-                '$count',
-                style: const TextStyle(
-                    color: FxColors.white, fontSize: 10),
+  /// Vibrant custom header — greeting, address, colorful action badges.
+  Widget _header(BuildContext context, AppState app,
+      dynamic user, String firstName, Address? address) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+      child: Row(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              gradient: MaxColors.grapeGradient,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: maxShadow(MaxColors.purple, blur: 12),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              firstName.isEmpty
+                  ? '?'
+                  : firstName[0].toUpperCase(),
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
               ),
             ),
           ),
-      ],
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${_greeting()}, $firstName 👋',
+                    style: MaxText.title),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    const Icon(Icons.location_on,
+                        size: 13, color: MaxColors.coral),
+                    const SizedBox(width: 3),
+                    Expanded(
+                      child: Text(
+                        address == null
+                            ? 'Add your address'
+                            : address.short,
+                        style: MaxText.caption,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          StreamBuilder<List<NotificationItem>>(
+            stream: app.repos.notifications.watch(user.id),
+            builder: (_, snap) {
+              final unread =
+                  (snap.data ?? []).where((n) => !n.read).length;
+              return _headerBtn(
+                context,
+                Icons.notifications_outlined,
+                MaxColors.sunSoft,
+                const Color(0xFFB8860B),
+                unread,
+                () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          const NotificationsScreen()),
+                ),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+          _headerBtn(
+            context,
+            Icons.shopping_cart_outlined,
+            MaxColors.mintSoft,
+            const Color(0xFF1E9E50),
+            app.cart.totalQty,
+            () => Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (_) => const CartScreen()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _headerBtn(
+    BuildContext context,
+    IconData icon,
+    Color bg,
+    Color fg,
+    int count,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: BorderRadius.circular(14),
+            ),
+            child: Icon(icon, color: fg, size: 22),
+          ),
+          if (count > 0)
+            Positioned(
+              right: -5,
+              top: -5,
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: const BoxDecoration(
+                  color: MaxColors.coral,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  '$count',
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _heroStat(String value, String label) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(value,
+              style: MaxText.onGradientBig.copyWith(fontSize: 22)),
+          Text(label,
+              style: MaxText.onGradient.copyWith(
+                  fontSize: 12,
+                  color: Colors.white.withValues(alpha: 0.85))),
+        ],
+      ),
     );
   }
 
@@ -316,65 +481,79 @@ class _HomeScreenState extends State<HomeScreen> {
     final lang = context.watch<AppState>().locale.languageCode;
     if (categories.isEmpty) {
       return const Padding(
-        padding: EdgeInsets.all(FxSpacing.md),
-        child: Text('No categories available right now.'),
+        padding: EdgeInsets.all(16),
+        child: Text('No categories available right now.',
+            style: MaxText.body),
       );
     }
     return GridView.count(
-      crossAxisCount: 3,
+      crossAxisCount: 4,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(FxSpacing.md),
-      mainAxisSpacing: 12,
-      crossAxisSpacing: 12,
-      childAspectRatio: 0.95,
-      children: categories
-          .map((c) => CategoryTile(
-                name: c.name(lang),
-                icon: categoryIcon(c.iconName),
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) =>
-                        CategoryDetailScreen(category: c),
-                  ),
-                ),
-              ))
-          .toList(),
+      padding: const EdgeInsets.all(16),
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 8,
+      childAspectRatio: 0.82,
+      children: categories.asMap().entries.map((e) {
+        final c = e.value;
+        return MaxCategoryTile(
+          icon: categoryIcon(c.iconName),
+          label: c.name(lang),
+          colorIndex: e.key,
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => CategoryDetailScreen(category: c),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 
   Widget _trustBadges() {
     const badges = [
-      (Icons.verified_outlined, 'Verified pros'),
-      (Icons.payments_outlined, 'Transparent pricing'),
-      (Icons.support_agent_outlined, 'Easy support'),
+      (Icons.verified, 'Verified pros', MaxColors.mintSoft,
+          Color(0xFF1E9E50)),
+      (Icons.payments, 'Clear pricing', MaxColors.sunSoft,
+          Color(0xFFB8860B)),
+      (Icons.support_agent, 'Easy support', MaxColors.skySoft,
+          Color(0xFF1B7FC1)),
     ];
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: FxSpacing.md, vertical: 8),
+      padding:
+          const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
-        children: badges
-            .map((b) => Expanded(
-                  child: FxCard(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 4),
-                    child: Column(
-                      children: [
-                        Icon(b.$1,
-                            color: FxColors.primary, size: 26),
-                        const SizedBox(height: 6),
-                        Text(
-                          b.$2,
-                          style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+        children: badges.asMap().entries.map((e) {
+          final b = e.value;
+          return Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: e.key == 0 ? 0 : 6,
+                  right: e.key == badges.length - 1 ? 0 : 6),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                decoration: BoxDecoration(
+                  color: b.$3,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Column(
+                  children: [
+                    Icon(b.$1, color: b.$4, size: 26),
+                    const SizedBox(height: 6),
+                    Text(
+                      b.$2,
+                      style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: b.$4),
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ))
-            .toList(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
