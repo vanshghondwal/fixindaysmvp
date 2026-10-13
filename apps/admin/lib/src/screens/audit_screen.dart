@@ -71,7 +71,7 @@ class _AuditScreenState extends State<AuditScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(FxSpacing.sm),
             decoration: BoxDecoration(
               color: FxColors.navy.withOpacity(0.08),
               borderRadius: BorderRadius.circular(FxRadius.md),
