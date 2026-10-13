@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import 'src/screens/splash_screen.dart';
 import 'src/state/app_state.dart';
+import 'src/voice/voice_overlay.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +51,9 @@ class FixinDaysCustomerApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      // Persistent voice-assistant mic button floats above every screen.
+      builder: (context, child) =>
+          VoiceOverlay(child: child ?? const SizedBox.shrink()),
       home: const SplashScreen(),
     );
   }

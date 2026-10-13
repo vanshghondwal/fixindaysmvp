@@ -167,8 +167,10 @@ class _BookingDetailScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Booking details')),
+    return VoiceScreenTag(
+      screenKey: 'booking',
+      child: Scaffold(
+      appBar: AppBar(title: Text(t.t('bookingDetails'))),
       body: Column(
         children: [
           if (AppConfig.useDemoData) const DemoBanner(),
@@ -204,7 +206,7 @@ class _BookingDetailScreenState
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _content(Booking b) {
