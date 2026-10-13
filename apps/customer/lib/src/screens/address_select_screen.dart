@@ -99,10 +99,16 @@ class _AddressSelectScreenState
                     onAction: _addNew,
                   );
                 }
-                return ListView.builder(
-                  padding: const EdgeInsets.all(FxSpacing.md),
-                  itemCount: list.length + 1,
-                  itemBuilder: (_, i) {
+                return RadioGroup<String>(
+                  groupValue: _selectedId,
+                  onChanged: (v) {
+                    if (v != null) _select(v);
+                  },
+                  child: ListView.builder(
+                    padding:
+                        const EdgeInsets.all(FxSpacing.md),
+                    itemCount: list.length + 1,
+                    itemBuilder: (_, i) {
                     if (i == list.length) {
                       return Padding(
                         padding: const EdgeInsets.only(
@@ -123,10 +129,6 @@ class _AddressSelectScreenState
                         padding: EdgeInsets.zero,
                         child: RadioListTile<String>(
                           value: a.id,
-                          groupValue: _selectedId,
-                          onChanged: (v) {
-                            if (v != null) _select(v);
-                          },
                           title: Row(
                             children: [
                               Text(a.label,
@@ -150,6 +152,7 @@ class _AddressSelectScreenState
                       ),
                     );
                   },
+                  ),
                 );
               },
             ),
@@ -163,6 +166,7 @@ class _AddressSelectScreenState
                   label: 'Continue',
                   onPressed: () async {
                     final list = await _future;
+                    if (!mounted) return;
                     Address? selected;
                     try {
                       selected = list.firstWhere(

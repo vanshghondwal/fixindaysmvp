@@ -73,8 +73,8 @@ class _AuditScreenState extends State<AuditScreen> {
           Container(
             padding: const EdgeInsets.all(FxSpacing.sm),
             decoration: BoxDecoration(
-              color: FxColors.navy.withOpacity(0.08),
-              borderRadius: BorderRadius.circular(FxRadius.md),
+              color: FxColors.navy.withValues(alpha: 0.08),
+              borderRadius: const BorderRadius.circular(FxRadius.md),
             ),
             child:
                 const Icon(Icons.history, size: 18, color: FxColors.navy),

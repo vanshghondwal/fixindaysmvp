@@ -143,7 +143,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     'Allow customers to pay the provider in cash after service.',
                     style: FxText.caption),
                 value: _cashEnabled,
-                activeColor: FxColors.primary,
+                activeThumbColor: FxColors.primary,
                 onChanged: (v) => setState(() => _cashEnabled = v),
               ),
             ),

@@ -144,7 +144,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Enter your phone number', style: FxText.headline),
+        const Text('Enter your phone number', style: FxText.headline),
         const SizedBox(height: 8),
         Text(
           'We\'ll send a one-time code to verify it.',
@@ -161,7 +161,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                 decoration: BoxDecoration(
                   color: FxColors.white,
                   border: Border.all(color: FxColors.borders),
-                  borderRadius: BorderRadius.circular(FxRadius.md),
+                  borderRadius: const BorderRadius.circular(FxRadius.md),
                 ),
                 child: DropdownButton<String>(
                   value: _countryCode,
@@ -203,7 +203,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Enter the code', style: FxText.headline),
+        const Text('Enter the code', style: FxText.headline),
         const SizedBox(height: 8),
         Text(
           'Sent to $_fullPhone',
@@ -214,8 +214,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
           Container(
             padding: const EdgeInsets.all(FxSpacing.md),
             decoration: BoxDecoration(
-              color: FxColors.warning.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(FxRadius.md),
+              color: FxColors.warning.withValues(alpha: 0.12),
+              borderRadius: const BorderRadius.circular(FxRadius.md),
             ),
             child: const Text(
               'Demo mode: any 6-digit OTP works.',

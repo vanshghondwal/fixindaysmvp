@@ -108,10 +108,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       padding: const EdgeInsets.all(FxSpacing.sm),
                       decoration: BoxDecoration(
-                        color: FxColors.error.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(FxRadius.md),
+                        color: FxColors.error.withValues(alpha: 0.1),
+                        borderRadius: const BorderRadius.circular(FxRadius.md),
                         border: Border.all(
-                            color: FxColors.error.withOpacity(0.4)),
+                            color: FxColors.error.withValues(alpha: 0.4)),
                       ),
                       child: Text(state.error!, style: const TextStyle(
                           color: FxColors.error, fontSize: 13)),

@@ -40,6 +40,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
       confirmLabel: 'Delete',
       destructive: true,
     );
+    if (!mounted) return;
     if (!ok) return;
     await context
         .read<AppState>()

@@ -133,7 +133,7 @@ class _BookingsScreenState extends State<BookingsScreen> {
         label: Text(label, style: const TextStyle(fontSize: 12)),
         selected: selected,
         onSelected: (_) => onTap(),
-        selectedColor: FxColors.primary.withOpacity(0.2),
+        selectedColor: FxColors.primary.withValues(alpha: 0.2),
       ),
     );
   }

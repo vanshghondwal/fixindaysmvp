@@ -10,7 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('FixinDaysAdminApp root widget is defined', () {
-    const app = FixinDaysAdminApp();
+    const app = FixinDaysAdminApp(demoMode: true);
     expect(app, isA<FixinDaysAdminApp>());
   });
 }

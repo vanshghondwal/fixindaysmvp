@@ -109,10 +109,10 @@ class _AddressFormScreenState extends State<AddressFormScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Label', style: FxText.subtitle),
+                const Text('Label', style: FxText.subtitle),
                 const SizedBox(height: 6),
                 DropdownButtonFormField<String>(
-                  value: _label,
+                  initialValue: _label,
                   decoration: const InputDecoration(
                     filled: true,
                     fillColor: FxColors.white,
