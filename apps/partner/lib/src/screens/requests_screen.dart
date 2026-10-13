@@ -51,6 +51,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
       destructive: !accept,
     );
     if (!ok) return;
+    if (!mounted) return;
     try {
       final state = context.read<PartnerState>();
       await state.ops.respondToBooking(b.id, accept);

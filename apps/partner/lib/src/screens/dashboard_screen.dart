@@ -221,8 +221,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: FxColors.navy.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(FxRadius.md),
+                color: FxColors.navy.withValues(alpha: 0.1),
+                borderRadius: const BorderRadius.circular(FxRadius.md),
               ),
               child:
                   const Icon(Icons.directions_car, color: FxColors.navy),

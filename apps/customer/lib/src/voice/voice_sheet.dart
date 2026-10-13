@@ -113,7 +113,8 @@ class _VoiceSheetState extends State<VoiceSheet> {
       localeId: hindi ? 'hi-IN' : 'en-IN',
       listenFor: const Duration(seconds: 30),
       pauseFor: const Duration(seconds: 4),
-      partialResults: true,
+      listenOptions:
+          SpeechListenOptions(partialResults: true),
     );
     if (mounted) setState(() {});
   }
@@ -376,7 +377,7 @@ class _VoiceSheetState extends State<VoiceSheet> {
                 decoration: BoxDecoration(
                   color: FxColors.white,
                   borderRadius:
-                      BorderRadius.circular(FxRadius.lg),
+                      const BorderRadius.circular(FxRadius.lg),
                   border: Border.all(color: FxColors.borders),
                 ),
                 child: Text(_answer,

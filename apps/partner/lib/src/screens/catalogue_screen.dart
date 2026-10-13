@@ -125,8 +125,8 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
                               height: 44,
                               decoration: BoxDecoration(
                                 color: FxColors.primary
-                                    .withOpacity(0.12),
-                                borderRadius: BorderRadius.circular(
+                                    .withValues(alpha: 0.12),
+                                borderRadius: const BorderRadius.circular(
                                     FxRadius.md),
                               ),
                               child: Icon(

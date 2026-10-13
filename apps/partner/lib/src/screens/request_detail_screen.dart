@@ -53,6 +53,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
       destructive: !accept,
     );
     if (!ok) return;
+    if (!mounted) return;
     await _run(() =>
         context.read<PartnerState>().ops.respondToBooking(b.id, accept));
   }
@@ -65,6 +66,7 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
       confirmLabel: FxLocalizations.of(context).t('confirm'),
     );
     if (!ok) return;
+    if (!mounted) return;
     await _run(
         () => context.read<PartnerState>().ops.transitionBooking(b.id, to));
   }

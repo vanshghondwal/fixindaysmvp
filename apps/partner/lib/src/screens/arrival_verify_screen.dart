@@ -112,12 +112,12 @@ class _ArrivalVerifyScreenState extends State<ArrivalVerifyScreen> {
                         padding:
                             const EdgeInsets.all(FxSpacing.md),
                         decoration: BoxDecoration(
-                          color: FxColors.error.withOpacity(0.08),
+                          color: FxColors.error.withValues(alpha: 0.08),
                           borderRadius:
-                              BorderRadius.circular(FxRadius.md),
+                              const BorderRadius.circular(FxRadius.md),
                           border: Border.all(
                               color:
-                                  FxColors.error.withOpacity(0.4)),
+                                  FxColors.error.withValues(alpha: 0.4)),
                         ),
                         child: Row(
                           children: [

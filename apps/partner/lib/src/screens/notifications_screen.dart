@@ -96,8 +96,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 color: (n.read
                                         ? FxColors.secondaryText
                                         : FxColors.primary)
-                                    .withOpacity(0.12),
-                                borderRadius: BorderRadius.circular(
+                                    .withValues(alpha: 0.12),
+                                borderRadius: const BorderRadius.circular(
                                     FxRadius.md),
                               ),
                               child: Icon(
@@ -124,11 +124,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         ),
                                       ),
                                       if (!n.read)
-                                        Container(
+                                        const Container(
                                           width: 10,
                                           height: 10,
                                           decoration:
-                                              const BoxDecoration(
+                                              BoxDecoration(
                                             color: FxColors.primary,
                                             shape: BoxShape.circle,
                                           ),

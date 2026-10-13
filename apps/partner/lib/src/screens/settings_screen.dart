@@ -93,45 +93,44 @@ class SettingsScreen extends StatelessWidget {
                 const FxSectionHeader(title: 'Preferences'),
                 const SizedBox(height: 8),
                 FxCard(
-                  padding: EdgeInsets.zero,
-                  child: Column(
-                    children: [
-                      RadioListTile<Locale>(
-                        title: Text(t.t('language')),
-                        subtitle: const Text('English'),
-                        value: const Locale('en'),
-                        groupValue: state.locale,
-                        onChanged: (v) =>
-                            context.read<PartnerState>().setLocale(v!),
-                      ),
-                      const Divider(height: 1),
-                      RadioListTile<Locale>(
-                        title: Text(t.t('language')),
-                        subtitle: const Text('हिन्दी'),
-                        value: const Locale('hi'),
-                        groupValue: state.locale,
-                        onChanged: (v) =>
-                            context.read<PartnerState>().setLocale(v!),
-                      ),
-                      const Divider(height: 1),
-                      SwitchListTile(
-                        title: const Text('Booking notifications'),
-                        subtitle: const Text(
-                            'Get notified about new requests (demo).',
-                            style: FxText.caption),
-                        value: state.notificationsEnabled,
-                        onChanged: (v) => context
-                            .read<PartnerState>()
-                            .setNotificationsEnabled(v),
-                      ),
-                    ],
+                  padding: const EdgeInsets.zero,
+                  child: RadioGroup<Locale>(
+                    groupValue: state.locale,
+                    onChanged: (v) =>
+                        context.read<PartnerState>().setLocale(v!),
+                    child: Column(
+                      children: [
+                        RadioListTile<Locale>(
+                          title: Text(t.t('language')),
+                          subtitle: const Text('English'),
+                          value: const Locale('en'),
+                        ),
+                        const Divider(height: 1),
+                        RadioListTile<Locale>(
+                          title: Text(t.t('language')),
+                          subtitle: const Text('हिन्दी'),
+                          value: const Locale('hi'),
+                        ),
+                        const Divider(height: 1),
+                        SwitchListTile(
+                          title: const Text('Booking notifications'),
+                          subtitle: const Text(
+                              'Get notified about new requests (demo).',
+                              style: FxText.caption),
+                          value: state.notificationsEnabled,
+                          onChanged: (v) => context
+                              .read<PartnerState>()
+                              .setNotificationsEnabled(v),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 16),
                 const FxSectionHeader(title: 'Account'),
                 const SizedBox(height: 8),
                 FxCard(
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.zero,
                   child: Column(
                     children: [
                       ListTile(
