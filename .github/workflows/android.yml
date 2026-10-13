@@ -1,0 +1,63 @@
+# Builds release APKs for the customer and partner apps on every push to main.
+name: Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/customer/**'
+      - 'apps/partner/**'
+      - 'packages/core/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.app }} APK
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [customer, partner]
+
+    defaults:
+      run:
+        working-directory: apps/${{ matrix.app }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      # Generates the android/ folder (Gradle wrapper, manifest) for this app.
+      - name: Ensure Android platform files
+        run: flutter create --platforms=android .
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Test
+        run: flutter test
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: fixindays-${{ matrix.app }}-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 30
