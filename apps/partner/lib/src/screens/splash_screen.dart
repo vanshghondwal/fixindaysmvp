@@ -41,14 +41,14 @@ class _PartnerSplashState extends State<PartnerSplash> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Container(
+            Container(
               width: 96,
               height: 96,
               decoration: BoxDecoration(
                 color: FxColors.white,
                 borderRadius: BorderRadius.circular(FxRadius.xl),
               ),
-              child: Icon(Icons.handyman,
+              child: const Icon(Icons.handyman,
                   size: 52, color: FxColors.primary),
             ),
             const SizedBox(height: 20),

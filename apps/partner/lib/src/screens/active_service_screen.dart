@@ -46,6 +46,8 @@ class _ActiveServiceScreenState extends State<ActiveServiceScreen> {
   Future<void> _transition(Booking b, BookingStatus to, String label,
       {bool destructive = false}) async {
     final t = FxLocalizations.of(context);
+    final ops = context.read<PartnerState>().ops;
+    final messenger = ScaffoldMessenger.of(context);
     final ok = await fxConfirm(
       context,
       title: label,
@@ -53,20 +55,18 @@ class _ActiveServiceScreenState extends State<ActiveServiceScreen> {
       confirmLabel: t.t('confirm'),
       destructive: destructive,
     );
+    if (!mounted) return;
     if (!ok) return;
     try {
-      await context
-          .read<PartnerState>()
-          .ops
-          .transitionBooking(b.id, to);
+      await ops.transitionBooking(b.id, to);
       _refresh();
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         const SnackBar(content: Text('Status updated.')),
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
+      messenger
           .showSnackBar(SnackBar(content: Text('Could not update: $e')));
     }
   }

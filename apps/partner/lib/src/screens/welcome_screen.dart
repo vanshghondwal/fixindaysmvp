@@ -33,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 12),
-                    const Container(
+                    Container(
                       width: 72,
                       height: 72,
                       decoration: BoxDecoration(
@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                         borderRadius:
                             BorderRadius.circular(FxRadius.lg),
                       ),
-                      child: Icon(Icons.handyman,
+                      child: const Icon(Icons.handyman,
                           size: 38, color: FxColors.white),
                     ),
                     const SizedBox(height: 16),
@@ -66,7 +66,7 @@ class WelcomeScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: FxColors.primary
                                       .withValues(alpha: 0.12),
-                                  borderRadius: const BorderRadius.circular(
+                                  borderRadius: BorderRadius.circular(
                                       FxRadius.md),
                                 ),
                                 child: Icon(p.$1,

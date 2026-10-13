@@ -118,8 +118,8 @@ class _EarningsScreenState extends State<EarningsScreen> {
                           ],
                         ),
                         const SizedBox(height: 16),
-                        FxCard(
-                          child: const Row(
+                        const FxCard(
+                          child: Row(
                             crossAxisAlignment:
                                 CrossAxisAlignment.start,
                             children: [

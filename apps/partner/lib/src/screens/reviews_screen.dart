@@ -29,7 +29,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
           if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: reviews.isEmpty
-                ? EmptyState(
+                ? const EmptyState(
                     icon: Icons.star_outline,
                     title: 'No reviews yet',
                     message:

@@ -114,7 +114,7 @@ class _ArrivalVerifyScreenState extends State<ArrivalVerifyScreen> {
                         decoration: BoxDecoration(
                           color: FxColors.error.withValues(alpha: 0.08),
                           borderRadius:
-                              const BorderRadius.circular(FxRadius.md),
+                              BorderRadius.circular(FxRadius.md),
                           border: Border.all(
                               color:
                                   FxColors.error.withValues(alpha: 0.4)),

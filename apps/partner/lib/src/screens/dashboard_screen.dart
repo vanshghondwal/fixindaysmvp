@@ -160,7 +160,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           _activeJobCard(d.activeJob!),
                         _statGrid(d, t),
                         const SizedBox(height: 16),
-                        FxSectionHeader(
+                        const FxSectionHeader(
                             title: 'Quick actions', onAction: null),
                         const SizedBox(height: 8),
                         _quickTile(
@@ -222,7 +222,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               height: 44,
               decoration: BoxDecoration(
                 color: FxColors.navy.withValues(alpha: 0.1),
-                borderRadius: const BorderRadius.circular(FxRadius.md),
+                borderRadius: BorderRadius.circular(FxRadius.md),
               ),
               child:
                   const Icon(Icons.directions_car, color: FxColors.navy),

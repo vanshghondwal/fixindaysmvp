@@ -64,7 +64,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   }
                   final items = snap.data ?? const [];
                   if (items.isEmpty) {
-                    return EmptyState(
+                    return const EmptyState(
                       icon: Icons.notifications_outlined,
                       title: 'No notifications',
                       message:
@@ -97,7 +97,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         ? FxColors.secondaryText
                                         : FxColors.primary)
                                     .withValues(alpha: 0.12),
-                                borderRadius: const BorderRadius.circular(
+                                borderRadius: BorderRadius.circular(
                                     FxRadius.md),
                               ),
                               child: Icon(
@@ -124,11 +124,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                         ),
                                       ),
                                       if (!n.read)
-                                        const Container(
+                                        Container(
                                           width: 10,
                                           height: 10,
                                           decoration:
-                                              BoxDecoration(
+                                              const BoxDecoration(
                                             color: FxColors.primary,
                                             shape: BoxShape.circle,
                                           ),

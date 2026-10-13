@@ -93,7 +93,7 @@ class SettingsScreen extends StatelessWidget {
                 const FxSectionHeader(title: 'Preferences'),
                 const SizedBox(height: 8),
                 FxCard(
-                  padding: const EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
                   child: RadioGroup<Locale>(
                     groupValue: state.locale,
                     onChanged: (v) =>
@@ -130,7 +130,7 @@ class SettingsScreen extends StatelessWidget {
                 const FxSectionHeader(title: 'Account'),
                 const SizedBox(height: 8),
                 FxCard(
-                  padding: const EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
                   child: Column(
                     children: [
                       ListTile(

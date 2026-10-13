@@ -68,11 +68,11 @@ class _VerificationApplyScreenState extends State<VerificationApplyScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  FxCard(
+                  const FxCard(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Row(
+                        Row(
                           children: [
                             Icon(Icons.verified_outlined,
                                 color: FxColors.primary, size: 28),
@@ -83,8 +83,8 @@ class _VerificationApplyScreenState extends State<VerificationApplyScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
+                        SizedBox(height: 8),
+                        Text(
                           'Verified partners get a badge on their profile, '
                           'rank higher in search and receive more booking '
                           'requests. Review usually takes 2 business days.',
@@ -121,7 +121,7 @@ class _VerificationApplyScreenState extends State<VerificationApplyScreen> {
                                       ],
                                     ),
                                   ),
-                                  FxButton(
+                                  const FxButton(
                                     label: 'Upload (soon)',
                                     kind: FxButtonKind.outlined,
                                     // Disabled in demo: Firebase Storage

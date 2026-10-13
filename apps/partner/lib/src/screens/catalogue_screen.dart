@@ -126,7 +126,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
                               decoration: BoxDecoration(
                                 color: FxColors.primary
                                     .withValues(alpha: 0.12),
-                                borderRadius: const BorderRadius.circular(
+                                borderRadius: BorderRadius.circular(
                                     FxRadius.md),
                               ),
                               child: Icon(

@@ -184,10 +184,10 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(FxSpacing.md),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: FxColors.background,
                 borderRadius: BorderRadius.circular(FxRadius.md),
-                border: BorderSide(color: FxColors.borders),
+                border: Border.all(color: FxColors.borders),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
