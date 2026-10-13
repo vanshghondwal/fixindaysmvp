@@ -110,11 +110,12 @@ class _VoiceSheetState extends State<VoiceSheet> {
     }
     await _stt.listen(
       onResult: _onResult,
-      localeId: hindi ? 'hi-IN' : 'en-IN',
-      listenFor: const Duration(seconds: 30),
-      pauseFor: const Duration(seconds: 4),
-      listenOptions:
-          SpeechListenOptions(partialResults: true),
+      listenOptions: SpeechListenOptions(
+        partialResults: true,
+        localeId: hindi ? 'hi-IN' : 'en-IN',
+        listenFor: const Duration(seconds: 30),
+        pauseFor: const Duration(seconds: 4),
+      ),
     );
     if (mounted) setState(() {});
   }
