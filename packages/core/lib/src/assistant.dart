@@ -193,7 +193,7 @@ bool _anyWord(String text, List<String> words) =>
 
 const _categoryKeywords = <String, List<String>>{
   'electrical': [
-    'electr', 'bijli', 'बिजली', 'wire', 'switch', 'fan', 'bulb',
+    'electr', 'electrician', 'bijli', 'बिजली', 'wire', 'switch', 'fan', 'bulb',
     'wiring', 'socket'
   ],
   'plumbing': [

@@ -70,10 +70,10 @@ class FxTheme {
           color: FxColors.white,
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: FxColors.white,
         elevation: 1,
-        shadowColor: FxColors.navy.withOpacity(0.08),
+        shadowColor: FxColors.navy.withValues(alpha: 0.08),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FxRadius.lg),
           side: const BorderSide(color: FxColors.borders, width: 1),

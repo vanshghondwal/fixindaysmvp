@@ -10,7 +10,7 @@ import 'models.dart';
 import 'repositories.dart';
 
 /// Marker interface so apps can detect demo mode and show the banner.
-abstract class DemoCapable {
+abstract mixin class DemoCapable {
   bool get isDemo => true;
 }
 

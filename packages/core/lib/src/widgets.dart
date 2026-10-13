@@ -5,6 +5,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+import 'l10n.dart';
 import 'logic.dart';
 import 'models.dart';
 import 'theme.dart';
@@ -338,7 +339,7 @@ class VerifiedBadge extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
         decoration: BoxDecoration(
-          color: FxColors.warning.withOpacity(0.12),
+          color: FxColors.warning.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(FxRadius.sm),
         ),
         child: const Text('Unverified',
@@ -384,7 +385,7 @@ class FxAvatar extends StatelessWidget {
     final initial = name.trim().isEmpty ? '?' : name.trim()[0].toUpperCase();
     return CircleAvatar(
       radius: radius,
-      backgroundColor: FxColors.primary.withOpacity(0.15),
+      backgroundColor: FxColors.primary.withValues(alpha: 0.15),
       child: Text(initial,
           style: TextStyle(
               color: FxColors.primary,
@@ -424,9 +425,9 @@ class StatusChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(FxRadius.xl),
-        border: Border.all(color: color.withOpacity(0.4)),
+        border: Border.all(color: color.withValues(alpha: 0.4)),
       ),
       child: Text(label,
           style: TextStyle(
@@ -556,7 +557,7 @@ class DemoBanner extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      color: FxColors.warning.withOpacity(0.15),
+      color: FxColors.warning.withValues(alpha: 0.15),
       child: Row(
         children: [
           const Icon(Icons.info_outline,
