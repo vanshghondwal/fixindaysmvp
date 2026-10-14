@@ -102,7 +102,6 @@ class _DisputeScreenState extends State<DisputeScreen> {
       appBar: AppBar(title: Text(t.t('reportIssue'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(FxSpacing.lg),

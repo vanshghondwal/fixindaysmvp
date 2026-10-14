@@ -124,7 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  if (AppConfig.useDemoData) const DemoBanner(),
                   // ---- Vibrant header ----
                   _header(context, app, user, firstName, data.address),
                   const SizedBox(height: 12),

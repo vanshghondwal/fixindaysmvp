@@ -67,7 +67,6 @@ class HelpScreen extends StatelessWidget {
       appBar: AppBar(title: Text(t.t('helpSupport'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(FxSpacing.md),
