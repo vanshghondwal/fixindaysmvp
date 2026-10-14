@@ -81,7 +81,6 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       appBar: AppBar(title: Text(widget.category.name(lang))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: FutureBuilder<_CategoryData>(
               future: _future,

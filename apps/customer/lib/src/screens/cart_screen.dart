@@ -25,7 +25,6 @@ class CartScreen extends StatelessWidget {
       body: cart.isEmpty
           ? Column(
               children: [
-                if (AppConfig.useDemoData) const DemoBanner(),
                 Expanded(
                   child: EmptyState(
                     icon: Icons.shopping_cart_outlined,
@@ -41,7 +40,6 @@ class CartScreen extends StatelessWidget {
             )
           : Column(
               children: [
-                if (AppConfig.useDemoData) const DemoBanner(),
                 // ---- Vibrant header ----
                 Padding(
                   padding:

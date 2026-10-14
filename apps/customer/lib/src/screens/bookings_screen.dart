@@ -24,7 +24,6 @@ class BookingsScreen extends StatelessWidget {
       child: MaxScaffold(
         body: Column(
           children: [
-            if (AppConfig.useDemoData) const DemoBanner(),
             // ---- Vibrant header ----
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),

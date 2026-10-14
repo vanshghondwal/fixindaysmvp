@@ -8,7 +8,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../state/app_state.dart';
+import 'chat_screen.dart';
 import 'dispute_screen.dart';
+import 'invoice_screen.dart';
 import 'reviews_screen.dart';
 
 class BookingDetailScreen extends StatefulWidget {
@@ -174,7 +176,6 @@ class _BookingDetailScreenState
       appBar: AppBar(title: Text(t.t('bookingDetails'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: FutureBuilder<Booking?>(
               future: _future,
@@ -381,6 +382,25 @@ class _BookingDetailScreenState
         ),
       ));
     }
+    // Always available: chat with provider + view invoice.
+    buttons.add(FxButton(
+      label: 'Chat with provider',
+      kind: FxButtonKind.outlined,
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => ChatScreen(providerName: b.providerName),
+        ),
+      ),
+    ));
+    buttons.add(FxButton(
+      label: 'View invoice',
+      kind: FxButtonKind.outlined,
+      onPressed: () => Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => InvoiceScreen(bookingId: b.id),
+        ),
+      ),
+    ));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

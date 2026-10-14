@@ -37,7 +37,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       appBar: AppBar(title: Text(t.t('allCategories'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: FutureBuilder<List<ServiceCategory>>(
               future: _future,
