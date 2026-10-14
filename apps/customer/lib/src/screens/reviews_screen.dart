@@ -44,7 +44,6 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
       appBar: AppBar(title: Text(t.t('reviews'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           if (widget.booking != null)
             _ReviewForm(booking: widget.booking!),
           Expanded(

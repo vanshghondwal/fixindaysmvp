@@ -58,7 +58,6 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(title: Text(t.t('settings'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(FxSpacing.md),
@@ -150,7 +149,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  'FixinDays customer v1.0.0 · demo mode',
+                  'FixinDays customer v1.0.0',
                   style: FxText.caption,
                   textAlign: TextAlign.center,
                 ),

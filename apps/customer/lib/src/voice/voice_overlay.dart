@@ -128,28 +128,51 @@ class _VoiceOverlayState extends State<VoiceOverlay> {
       children: [
         widget.child,
         Positioned(
-          right: FxSpacing.md,
-          bottom: 96, // floats just above the bottom navigation bar
+          right: 16,
+          bottom: 100, // floats just above the bottom navigation bar
           child: Semantics(
             label: t.t('voiceTitle'),
             button: true,
-            child: Material(
-              color: FxColors.primary,
-              shape: const CircleBorder(),
-              elevation: 6,
-              child: InkWell(
-                customBorder: const CircleBorder(),
-                onTap: _onMicTap,
-                child: Tooltip(
-                  message: t.t('voiceTapMic'),
-                  child: const SizedBox(
-                    width: 56,
-                    height: 56,
-                    child:
-                        Icon(Icons.mic, color: FxColors.white, size: 28),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Material(
+                  color: MaxColors.orange,
+                  shape: const CircleBorder(),
+                  elevation: 8,
+                  shadowColor: MaxColors.orange.withValues(alpha: 0.4),
+                  child: InkWell(
+                    customBorder: const CircleBorder(),
+                    onTap: _onMicTap,
+                    child: Tooltip(
+                      message: t.t('voiceTapMic'),
+                      child: const SizedBox(
+                        width: 60,
+                        height: 60,
+                        child: Icon(Icons.mic,
+                            color: Colors.white, size: 30),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 4),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: MaxColors.ink.withValues(alpha: 0.75),
+                    borderRadius: BorderRadius.circular(99),
+                  ),
+                  child: const Text(
+                    'AI',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

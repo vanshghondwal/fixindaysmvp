@@ -83,7 +83,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(FxSpacing.md),

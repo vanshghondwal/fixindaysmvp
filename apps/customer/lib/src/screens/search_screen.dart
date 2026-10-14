@@ -76,7 +76,6 @@ class _SearchScreenState extends State<SearchScreen> {
       child: MaxScaffold(
         body: Column(
           children: [
-            if (AppConfig.useDemoData) const DemoBanner(),
             // ---- Vibrant header ----
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
