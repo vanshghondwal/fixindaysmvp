@@ -61,7 +61,6 @@ class _VerificationApplyScreenState extends State<VerificationApplyScreen> {
       appBar: AppBar(title: const Text('Get verified')),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(FxSpacing.lg),

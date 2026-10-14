@@ -72,7 +72,6 @@ class _VerificationStatusScreenState extends State<VerificationStatusScreen> {
       appBar: AppBar(title: const Text('Verification status')),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(FxSpacing.lg),

@@ -100,7 +100,6 @@ class _SupportScreenState extends State<SupportScreen> {
       appBar: AppBar(title: Text(t.t('helpSupport'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: FutureBuilder<_SupportData>(
               future: _future,

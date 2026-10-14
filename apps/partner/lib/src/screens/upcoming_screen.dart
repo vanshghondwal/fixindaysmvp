@@ -70,7 +70,6 @@ class _UpcomingScreenState extends State<UpcomingScreen> {
       appBar: AppBar(title: Text(t.t('upcoming'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Padding(
             padding: const EdgeInsets.fromLTRB(
                 FxSpacing.lg, FxSpacing.md, FxSpacing.lg, 0),

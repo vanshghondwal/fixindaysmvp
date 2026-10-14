@@ -66,7 +66,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         title: const Text('Privacy', style: MaxText.title),
         content: const Text(
-          'Demo mode: all data in this app is sample data stored in memory on '
+          'All data in this app is sample data stored in memory on '
           'this device. Nothing is uploaded anywhere. After Firebase is '
           'connected, your business profile is visible to customers in your '
           'service areas, and booking details are shared only with the '
@@ -97,7 +97,6 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
@@ -193,7 +192,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 const Text(
-                  'FixinDays Partner • 1.0.0+1 • Demo mode',
+                  'FixinDays Partner • 1.0.0+1',
                   style: MaxText.caption,
                   textAlign: TextAlign.center,
                 ),

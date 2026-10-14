@@ -125,7 +125,6 @@ class _ServiceEditScreenState extends State<ServiceEditScreen> {
           AppBar(title: Text(_editing ? 'Edit service' : 'Add service')),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(FxSpacing.lg),
