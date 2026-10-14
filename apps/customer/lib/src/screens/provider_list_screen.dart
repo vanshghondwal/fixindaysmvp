@@ -85,7 +85,6 @@ class _ProviderListScreenState extends State<ProviderListScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           // ---- Vibrant header ----
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),

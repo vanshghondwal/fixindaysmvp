@@ -56,7 +56,6 @@ class _NotificationsScreenState
       appBar: AppBar(title: Text(t.t('notifications'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: StreamBuilder<List<NotificationItem>>(
               stream: _stream,

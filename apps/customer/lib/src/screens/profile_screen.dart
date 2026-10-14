@@ -10,8 +10,10 @@ import '../state/app_state.dart';
 import 'addresses_screen.dart';
 import 'bookings_screen.dart';
 import 'edit_profile_screen.dart';
+import 'favorites_screen.dart';
 import 'help_screen.dart';
 import 'language_screen.dart';
+import 'offers_screen.dart';
 import 'settings_screen.dart';
 import 'welcome_screen.dart';
 
@@ -47,7 +49,6 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           // ---- Gradient hero card ----
           MaxHeroCard(
             gradient: MaxColors.grapeGradient,
@@ -193,6 +194,29 @@ class ProfileScreen extends StatelessWidget {
               MaterialPageRoute(
                   builder: (_) =>
                       const BookingsScreen()),
+            ),
+          ),
+          _menuTile(
+            context,
+            icon: Icons.favorite_outline,
+            label: 'Favorites',
+            bg: MaxColors.pinkSoft,
+            fg: MaxColors.pink,
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (_) =>
+                      const FavoritesScreen()),
+            ),
+          ),
+          _menuTile(
+            context,
+            icon: Icons.local_offer_outlined,
+            label: 'Offers & coupons',
+            bg: MaxColors.orangeSoft,
+            fg: MaxColors.orangeDeep,
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (_) => const OffersScreen()),
             ),
           ),
           _menuTile(

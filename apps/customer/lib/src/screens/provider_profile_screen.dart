@@ -72,7 +72,6 @@ class _ProviderProfileScreenState
       child: MaxScaffold(
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: FutureBuilder<_ProfileData>(
               future: _future,
