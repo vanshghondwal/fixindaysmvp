@@ -79,7 +79,6 @@ class _RequestsScreenState extends State<RequestsScreen> {
       ),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: RefreshIndicator(
               color: MaxColors.orange,

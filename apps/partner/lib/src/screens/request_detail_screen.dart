@@ -93,7 +93,6 @@ class _RequestDetailScreenState extends State<RequestDetailScreen> {
       appBar: AppBar(title: const Text('Booking details')),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: FutureBuilder<Booking?>(
               future: _future,

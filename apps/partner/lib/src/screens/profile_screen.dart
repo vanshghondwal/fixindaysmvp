@@ -12,12 +12,14 @@ import '../state/partner_state.dart';
 import 'active_service_screen.dart';
 import 'areas_screen.dart';
 import 'availability_screen.dart';
+import 'bank_details_screen.dart';
 import 'history_screen.dart';
 import 'notifications_screen.dart';
 import 'profile_setup_screen.dart';
 import 'reviews_screen.dart';
 import 'settings_screen.dart';
 import 'support_screen.dart';
+import 'training_screen.dart';
 import 'upcoming_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -43,7 +45,6 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
@@ -85,6 +86,14 @@ class ProfileScreen extends StatelessWidget {
                       'Service areas', 6,
                       () =>
                           _push(context, const AreasScreen())),
+                  _tile(context, Icons.account_balance_outlined,
+                      'Bank details', 0,
+                      () => _push(
+                          context, const BankDetailsScreen())),
+                  _tile(context, Icons.school_outlined,
+                      'Training', 1,
+                      () => _push(
+                          context, const TrainingScreen())),
                   _tile(context, Icons.star_outline, t.t('reviews'), 4,
                       () => _push(context, const ReviewsScreen())),
                   _tile(context, Icons.notifications_outlined,

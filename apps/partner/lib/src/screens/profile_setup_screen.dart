@@ -120,7 +120,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       ),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(FxSpacing.lg),

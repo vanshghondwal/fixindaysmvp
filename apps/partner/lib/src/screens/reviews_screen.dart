@@ -26,7 +26,6 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
       appBar: AppBar(title: Text(t.t('reviews'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: reviews.isEmpty
                 ? const EmptyState(
@@ -64,7 +63,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                             const Expanded(
                               child: Text(
                                 'Ratings come from customers after completed '
-                                'jobs. The summary above is demo data.',
+                                'jobs.',
                                 style: FxText.caption,
                               ),
                             ),
