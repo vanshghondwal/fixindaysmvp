@@ -62,7 +62,6 @@ class _AreasScreenState extends State<AreasScreen> {
       appBar: AppBar(title: const Text('Service areas')),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(FxSpacing.lg),

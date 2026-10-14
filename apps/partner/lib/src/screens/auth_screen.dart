@@ -143,7 +143,6 @@ class _AuthScreenState extends State<AuthScreen> {
         ),
         body: Column(
           children: [
-            if (AppConfig.useDemoData) const DemoBanner(),
             Expanded(
               child: TabBarView(
                 children: [
@@ -171,7 +170,7 @@ class _AuthScreenState extends State<AuthScreen> {
               SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'Demo mode: any 6-digit OTP works.',
+                  'Any 6-digit OTP works.',
                   style: FxText.caption,
                 ),
               ),

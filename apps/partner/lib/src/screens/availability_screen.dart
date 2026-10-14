@@ -94,7 +94,6 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
       appBar: AppBar(title: const Text('Availability')),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(FxSpacing.lg),
