@@ -123,7 +123,7 @@ class _LoginFormState extends State<_LoginForm> {
       const SnackBar(
         content: Text(
           'If an account exists, a reset link was sent. '
-          '(Demo mode: no email is actually sent.)',
+          '(No email is actually sent.)',
         ),
       ),
     );

@@ -1,9 +1,9 @@
 /// FixinDays customer app entry point.
 ///
-/// Demo mode is ON until Firebase is configured (see FIREBASE_SETUP.md at the
-/// repo root). Firebase.initializeApp() is attempted best-effort: if it
-/// fails (no google-services config yet) the app keeps running on clearly
-/// labelled demo data with a "Demo mode" banner.
+/// Runs on local sample data until Firebase is configured (see FIREBASE_SETUP.md
+/// at the repo root). Firebase.initializeApp() is attempted best-effort: if it
+/// fails (no google-services config yet) the app keeps running on the local
+/// sample data.
 library;
 
 import 'package:firebase_core/firebase_core.dart';

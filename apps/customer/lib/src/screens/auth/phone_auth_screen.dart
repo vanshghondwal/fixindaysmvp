@@ -218,7 +218,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
               borderRadius: BorderRadius.circular(FxRadius.md),
             ),
             child: const Text(
-              'Demo mode: any 6-digit OTP works.',
+              'Any 6-digit OTP works.',
               style: TextStyle(color: FxColors.navy, fontSize: 13),
             ),
           ),

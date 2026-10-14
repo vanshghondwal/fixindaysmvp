@@ -27,7 +27,6 @@ class BookingConfirmationScreen extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(FxSpacing.lg),
           children: [
-            if (AppConfig.useDemoData) const DemoBanner(),
             const SizedBox(height: 24),
             const Icon(Icons.check_circle,
                 size: 80, color: FxColors.primary),

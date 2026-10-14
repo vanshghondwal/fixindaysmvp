@@ -69,7 +69,6 @@ class _AddressSelectScreenState
       appBar: AppBar(title: Text(t.t('address'))),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: FutureBuilder<List<Address>>(
               future: _future,
