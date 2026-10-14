@@ -1,87 +1,88 @@
 import 'package:flutter/material.dart';
 
-/// FixinDays MAXIMALISM design system.
+/// FixinDays PREMIUM "Trust" design system.
 ///
-/// Bold, vibrant, dense, playful — inspired by modern fintech maximalism:
-/// warm cream backgrounds, gradient hero cards, colorful category chips,
-/// big bold numbers, soft colored shadows. Every screen should feel alive.
+/// Professional, trustworthy, refined — built for a home-services business
+/// presentation: deep navy primary, warm amber accent, clean off-white
+/// backgrounds, muted sophisticated category tones, subtle shadows.
+/// Calm confidence instead of playful noise.
 class MaxColors {
   MaxColors._();
 
   // ---- Backgrounds ----
-  static const cream = Color(0xFFFFF9F0);
-  static const creamDeep = Color(0xFFFFF1DC);
+  static const cream = Color(0xFFFAFAF8);
+  static const creamDeep = Color(0xFFF0F2F5);
   static const cardWhite = Color(0xFFFFFFFF);
 
-  // ---- Primary (warm orange, the brand pop) ----
-  static const orange = Color(0xFFFF6B35);
-  static const orangeDeep = Color(0xFFE85D2A);
-  static const orangeSoft = Color(0xFFFFE9DC);
+  // ---- Primary (warm amber, the brand accent) ----
+  static const orange = Color(0xFFF59E0B);
+  static const orangeDeep = Color(0xFFD97706);
+  static const orangeSoft = Color(0xFFFEF3E2);
 
-  // ---- Accent rainbow ----
-  static const sun = Color(0xFFFFC93C);
-  static const sunSoft = Color(0xFFFFF4D6);
-  static const coral = Color(0xFFFF4757);
-  static const coralSoft = Color(0xFFFFE2E5);
-  static const mint = Color(0xFF2ED573);
-  static const mintSoft = Color(0xFFDCF7E5);
-  static const sky = Color(0xFF45AAF2);
-  static const skySoft = Color(0xFFDFF1FD);
-  static const purple = Color(0xFFA55EEA);
-  static const purpleSoft = Color(0xFFF0E2FD);
-  static const pink = Color(0xFFFD79A8);
-  static const pinkSoft = Color(0xFFFFE3EF);
-  static const teal = Color(0xFF00CEC9);
-  static const tealSoft = Color(0xFFD8F8F7);
+  // ---- Muted professional accents ----
+  static const sun = Color(0xFFC9A227);
+  static const sunSoft = Color(0xFFFBF3DC);
+  static const coral = Color(0xFFC4705A);
+  static const coralSoft = Color(0xFFF7E8E2);
+  static const mint = Color(0xFF6B8F71);
+  static const mintSoft = Color(0xFFE6EFE8);
+  static const sky = Color(0xFF5B7FA6);
+  static const skySoft = Color(0xFFE5ECF3);
+  static const purple = Color(0xFF7E7390);
+  static const purpleSoft = Color(0xFFECE8F1);
+  static const pink = Color(0xFFB76E79);
+  static const pinkSoft = Color(0xFFF5E8EA);
+  static const teal = Color(0xFF2F6F6B);
+  static const tealSoft = Color(0xFFE0EEED);
 
-  // ---- Ink ----
-  static const ink = Color(0xFF2D3142);
-  static const inkSoft = Color(0xFF6B7086);
-  static const inkFaint = Color(0xFFA7ACBE);
-  static const line = Color(0xFFF0E6D6);
+  // ---- Ink (deep navy text scale) ----
+  static const ink = Color(0xFF1A2B4A);
+  static const inkSoft = Color(0xFF4A5A75);
+  static const inkFaint = Color(0xFF8A94A8);
+  static const line = Color(0xFFE8EAF0);
 
-  // ---- Category color rotation (bg, fg) ----
+  // ---- Category color rotation (bg, fg) — muted professional tones ----
   static const categoryPairs = <(Color bg, Color fg)>[
-    (orangeSoft, orange),
-    (sunSoft, Color(0xFFB8860B)),
-    (mintSoft, Color(0xFF1E9E50)),
-    (skySoft, Color(0xFF1B7FC1)),
-    (purpleSoft, purple),
-    (pinkSoft, pink),
+    (orangeSoft, orangeDeep),
+    (skySoft, sky),
+    (mintSoft, mint),
     (coralSoft, coral),
-    (tealSoft, Color(0xFF00968F)),
+    (purpleSoft, purple),
+    (tealSoft, teal),
+    (pinkSoft, pink),
+    (sunSoft, Color(0xFF9A7B1A)),
   ];
 
-  // ---- Signature gradients ----
+  // ---- Signature gradients — subtle, sophisticated ----
   static const heroGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFFF8A3D), Color(0xFFFFC93C)],
+    colors: [Color(0xFF1A2B4A), Color(0xFF2F6F6B)],
   );
   static const sunsetGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFFF6B81), Color(0xFFFFA26B)],
+    colors: [Color(0xFFF59E0B), Color(0xFFD97706)],
   );
   static const oceanGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF45AAF2), Color(0xFF7B7BF5)],
+    colors: [Color(0xFF1A2B4A), Color(0xFF5B7FA6)],
   );
   static const mintGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF2ED573), Color(0xFF00CEC9)],
+    colors: [Color(0xFF6B8F71), Color(0xFF2F6F6B)],
   );
   static const grapeGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFA55EEA), Color(0xFFFD79A8)],
+    colors: [Color(0xFF7E7390), Color(0xFFB76E79)],
   );
   static const inkGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF3A3F5C), Color(0xFF23263A)],
+    colors: [Color(0xFF1A2B4A), Color(0xFF0F1D33)],
   );
 
   /// Pick a (bg, fg) pair for index i, rotating through the palette.
@@ -89,66 +90,66 @@ class MaxColors {
       categoryPairs[i % categoryPairs.length];
 }
 
-/// Maximalism text styles — big, bold, confident.
+/// Premium text styles — bold but refined, comfortable letter spacing.
 class MaxText {
   MaxText._();
 
   static const display = TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.w900,
-    color: MaxColors.ink,
-    letterSpacing: -0.5,
-  );
-  static const headline = TextStyle(
-    fontSize: 22,
+    fontSize: 28,
     fontWeight: FontWeight.w800,
     color: MaxColors.ink,
-    letterSpacing: -0.3,
+    letterSpacing: 0,
+  );
+  static const headline = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    color: MaxColors.ink,
+    letterSpacing: 0,
   );
   static const title = TextStyle(
-    fontSize: 17,
-    fontWeight: FontWeight.w700,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
     color: MaxColors.ink,
   );
   static const body = TextStyle(
     fontSize: 14,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
     color: MaxColors.inkSoft,
   );
   static const caption = TextStyle(
     fontSize: 12,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w500,
     color: MaxColors.inkFaint,
   );
   static const bigNumber = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.w900,
+    fontSize: 26,
+    fontWeight: FontWeight.w800,
     color: MaxColors.ink,
-    letterSpacing: -0.8,
+    letterSpacing: -0.3,
   );
   static const onGradient = TextStyle(
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: FontWeight.w600,
     color: Colors.white,
   );
   static const onGradientBig = TextStyle(
-    fontSize: 28,
-    fontWeight: FontWeight.w900,
+    fontSize: 24,
+    fontWeight: FontWeight.w800,
     color: Colors.white,
-    letterSpacing: -0.5,
+    letterSpacing: -0.2,
   );
 }
 
-/// A soft, colorful shadow for maximalist cards.
-List<BoxShadow> maxShadow(Color color, {double blur = 18}) => [
+/// A soft, subtle shadow for premium cards.
+List<BoxShadow> maxShadow(Color color, {double blur = 12}) => [
       BoxShadow(
-        color: color.withValues(alpha: 0.14),
+        color: color.withValues(alpha: 0.08),
         blurRadius: blur,
-        offset: const Offset(0, 8),
+        offset: const Offset(0, 4),
       ),
     ];
 
-/// The signature maximalist card — white, 24px radius, soft tinted shadow.
+/// The signature premium card — white, 16px radius, subtle shadow.
 class MaxCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -169,21 +170,21 @@ class MaxCard extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         color: MaxColors.cardWhite,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: maxShadow(shadowColor ?? MaxColors.orange),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: maxShadow(shadowColor ?? MaxColors.ink),
       ),
       child: child,
     );
     if (onTap == null) return card;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
+      borderRadius: BorderRadius.circular(16),
       child: card,
     );
   }
 }
 
-/// Gradient hero card — the bold statement piece on every screen.
+/// Gradient hero card — the refined statement piece on every screen.
 class MaxHeroCard extends StatelessWidget {
   final Widget child;
   final Gradient gradient;
@@ -202,15 +203,15 @@ class MaxHeroCard extends StatelessWidget {
       padding: padding,
       decoration: BoxDecoration(
         gradient: gradient,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: maxShadow(MaxColors.orangeDeep, blur: 24),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: maxShadow(MaxColors.ink, blur: 16),
       ),
       child: child,
     );
   }
 }
 
-/// Colorful category tile — icon chip on tinted bg + label.
+/// Professional category tile — icon chip on tinted bg + label.
 class MaxCategoryTile extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -230,19 +231,19 @@ class MaxCategoryTile extends StatelessWidget {
     final (bg, fg) = MaxColors.pairFor(colorIndex);
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 62,
-            height: 62,
+            width: 56,
+            height: 56,
             decoration: BoxDecoration(
               color: bg,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: maxShadow(fg, blur: 12),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: maxShadow(fg, blur: 8),
             ),
-            child: Icon(icon, color: fg, size: 28),
+            child: Icon(icon, color: fg, size: 26),
           ),
           const SizedBox(height: 8),
           Text(
@@ -252,7 +253,7 @@ class MaxCategoryTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 12,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               color: MaxColors.ink,
             ),
           ),
@@ -262,7 +263,7 @@ class MaxCategoryTile extends StatelessWidget {
   }
 }
 
-/// Bold section header with optional action link.
+/// Refined section header with optional action link.
 class MaxSectionHeader extends StatelessWidget {
   final String title;
   final String? actionLabel;
@@ -287,8 +288,8 @@ class MaxSectionHeader extends StatelessWidget {
             TextButton(
               onPressed: onAction,
               style: TextButton.styleFrom(
-                foregroundColor: MaxColors.orange,
-                textStyle: const TextStyle(fontWeight: FontWeight.w800),
+                foregroundColor: MaxColors.orangeDeep,
+                textStyle: const TextStyle(fontWeight: FontWeight.w700),
               ),
               child: Text(actionLabel!),
             ),
@@ -308,7 +309,7 @@ class MaxStat extends StatelessWidget {
     super.key,
     required this.value,
     required this.label,
-    this.accent = MaxColors.orange,
+    this.accent = MaxColors.orangeDeep,
   });
 
   @override
@@ -318,7 +319,7 @@ class MaxStat extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(value,
-            style: MaxText.bigNumber.copyWith(color: accent, fontSize: 24)),
+            style: MaxText.bigNumber.copyWith(color: accent, fontSize: 22)),
         const SizedBox(height: 2),
         Text(label, style: MaxText.caption),
       ],
@@ -326,7 +327,7 @@ class MaxStat extends StatelessWidget {
   }
 }
 
-/// Pill badge — tiny colorful label.
+/// Pill badge — tiny refined label.
 class MaxPill extends StatelessWidget {
   final String label;
   final Color bg;
@@ -346,7 +347,7 @@ class MaxPill extends StatelessWidget {
         label,
         style: TextStyle(
           fontSize: 11,
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w700,
           color: fg,
         ),
       ),
@@ -354,7 +355,7 @@ class MaxPill extends StatelessWidget {
   }
 }
 
-/// Maximalist primary button — bold orange, chunky radius.
+/// Premium primary button — deep amber, refined radius.
 class MaxButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
@@ -366,7 +367,7 @@ class MaxButton extends StatelessWidget {
     required this.label,
     this.onPressed,
     this.icon,
-    this.gradient = MaxColors.heroGradient,
+    this.gradient = MaxColors.sunsetGradient,
   });
 
   @override
@@ -374,7 +375,7 @@ class MaxButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: gradient,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: maxShadow(MaxColors.orangeDeep),
       ),
       child: ElevatedButton(
@@ -385,11 +386,11 @@ class MaxButton extends StatelessWidget {
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(14),
           ),
           textStyle: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w800,
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
           ),
         ),
         child: Row(
@@ -407,7 +408,7 @@ class MaxButton extends StatelessWidget {
   }
 }
 
-/// Maximalist scaffold — cream background, ready for dense content.
+/// Premium scaffold — clean off-white background, ready for content.
 class MaxScaffold extends StatelessWidget {
   final Widget body;
   final PreferredSizeWidget? appBar;
