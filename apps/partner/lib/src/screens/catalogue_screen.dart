@@ -74,7 +74,6 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
       ),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async => _refresh(),

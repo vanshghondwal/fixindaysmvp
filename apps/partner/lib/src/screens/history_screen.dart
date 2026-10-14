@@ -55,7 +55,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
       appBar: AppBar(title: const Text('Booking history')),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           Padding(
             padding: const EdgeInsets.fromLTRB(
                 FxSpacing.lg, FxSpacing.md, FxSpacing.lg, 0),

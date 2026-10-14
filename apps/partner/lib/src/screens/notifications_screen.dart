@@ -56,7 +56,6 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       ),
       body: Column(
         children: [
-          if (AppConfig.useDemoData) const DemoBanner(),
           if (user == null)
             const Expanded(
               child: Center(
